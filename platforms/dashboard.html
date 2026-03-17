@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Жеке кабинет</title>
+  <link rel="stylesheet" href="../css/common.css">
+  <link rel="stylesheet" href="../css/main.css">
+</head>
+
+<body>
+
+  <header>
+    <h2>Magister Platform</h2>
+
+    <nav>
+      <a href="../platforms/index.html">Басты бет</a>
+      <a href="#" class="nav-btn" onclick="logoutUser()">Шығу</a>
+    </nav>
+  </header>
+
+  <section class="dashboard">
+    <h1>Жеке кабинет</h1>
+    <p class="dashboard-subtitle">Сіздің аккаунт ақпаратыңыз</p>
+
+    <div class="dashboard-cards">
+      <div class="dashboard-card">
+        <h3>Пайдаланушы</h3>
+        <p id="user-email">Жүктелуде...</p>
+        <button class="btn" onclick="logoutUser()">Шығу</button>
+      </div>
+    </div>
+  </section>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../js/script.js"></script>
+
+  <script>
+    checkUser();
+  </script>
+
+</body>
+</html>

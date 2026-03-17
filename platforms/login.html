@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Кіру</title>
+  <link rel="stylesheet" href="../css/common.css">
+  <link rel="stylesheet" href="../css/login.css">
+</head>
+
+<body class="form-page">
+
+  <div class="form-box">
+
+    <img src="../images/logo.jpg" class="logo" alt="Logo">
+
+    <h2>Авторизация</h2>
+    <p>Аккаунтыңызға кіріңіз</p>
+
+    <input type="email" id="email" placeholder="Эл. почта">
+    <input type="password" id="password" placeholder="Пароль">
+
+    <button class="btn" onclick="loginUser()">Кіру</button>
+
+    <div class="form-link">
+      Аккаунт жоқ па? <a href="register.html">Тіркелу</a>
+    </div>
+
+    <div class="form-link">
+      <a href="reset.html">Құпия сөзді қалпына келтіру</a>
+    </div>
+
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../js/script.js"></script>
+
+</body>
+</html>
