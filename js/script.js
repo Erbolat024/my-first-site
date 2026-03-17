@@ -111,7 +111,7 @@ async function logoutUser() {
   }
 
   alert("Сіз аккаунттан шықтыңыз");
-  window.location.href = "index.html";
+  window.location.href = "../index.html";
 }
 
 /* ---------------- RESET PASSWORD EMAIL ---------------- */
@@ -134,7 +134,7 @@ async function resetPassword() {
   }
 
   const { error } = await supabaseClient.auth.resetPasswordForEmail(email, {
-    redirectTo: window.location.origin + "/platforms/update-password.html"
+    redirectTo: window.location.origin + "/my-first-site/pages/update-password.html"
   });
 
   if (error) {
