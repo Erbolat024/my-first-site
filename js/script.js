@@ -12,19 +12,23 @@ if (typeof supabase !== "undefined") {
 async function registerUser() {
   if (!supabaseClient) return;
 
+  const nameInput = document.getElementById("name");
+  const phoneInput = document.getElementById("phone");
   const emailInput = document.getElementById("email");
   const passwordInput = document.getElementById("password");
 
-  if (!emailInput || !passwordInput) {
+  if (!nameInput || !phoneInput || !emailInput || !passwordInput) {
     alert("Тіркелу өрістері табылмады");
     return;
   }
 
+  const name = nameInput.value.trim();
+  const phone = phoneInput.value.trim();
   const email = emailInput.value.trim();
   const password = passwordInput.value.trim();
 
-  if (!email || !password) {
-    alert("Email мен парольді толтырыңыз");
+  if (!name || !phone || !email || !password) {
+    alert("Барлық өрісті толтырыңыз");
     return;
   }
 
@@ -33,17 +37,47 @@ async function registerUser() {
     return;
   }
 
-  const { error } = await supabaseClient.auth.signUp({
+  const { data, error } = await supabaseClient.auth.signUp({
     email: email,
-    password: password
+    password: password,
+    options: {
+      data: {
+        name: name,
+        phone: phone
+      }
+    }
   });
 
   if (error) {
+    console.log("FULL ERROR:", error);
     alert("Қате: " + error.message);
-  } else {
-    alert("Тіркелу сәтті өтті!");
-    window.location.href = "login.html";
+    return;
   }
+
+  const user = data?.user;
+
+  if (user) {
+    const { error: profileError } = await supabaseClient
+      .from("profiles")
+      .upsert([
+        {
+          id: user.id,
+          name: name,
+          phone: phone,
+          email: email,
+          available_subjects: []
+        }
+      ]);
+
+    if (profileError) {
+      console.log("PROFILE ERROR:", profileError);
+      alert("Профиль сақтау қатесі: " + profileError.message);
+      return;
+    }
+  }
+
+  alert("Тіркелу сәтті өтті!");
+  window.location.href = "login.html";
 }
 
 /* ---------------- LOGIN ---------------- */
@@ -73,29 +107,13 @@ async function loginUser() {
   });
 
   if (error) {
+    console.log("LOGIN ERROR:", error);
     alert("Қате: " + error.message);
-  } else {
-    alert("Кіру сәтті өтті!");
-    window.location.href = "dashboard.html";
+    return;
   }
-}
 
-/* ---------------- CHECK USER ---------------- */
-
-async function checkUser() {
-  if (!supabaseClient) return;
-
-  const { data, error } = await supabaseClient.auth.getUser();
-
-  if (error || !data.user) {
-    window.location.href = "login.html";
-  } else {
-    const userEmail = document.getElementById("user-email");
-
-    if (userEmail) {
-      userEmail.textContent = "Сіздің email: " + data.user.email;
-    }
-  }
+  alert("Кіру сәтті өтті!");
+  window.location.href = "../cabinet/index.html";
 }
 
 /* ---------------- LOGOUT ---------------- */
@@ -106,12 +124,13 @@ async function logoutUser() {
   const { error } = await supabaseClient.auth.signOut();
 
   if (error) {
+    console.log("LOGOUT ERROR:", error);
     alert("Қате: " + error.message);
     return;
   }
 
   alert("Сіз аккаунттан шықтыңыз");
-  window.location.href = "../index.html";
+  window.location.href = "../pages/login.html";
 }
 
 /* ---------------- RESET PASSWORD EMAIL ---------------- */
@@ -134,14 +153,16 @@ async function resetPassword() {
   }
 
   const { error } = await supabaseClient.auth.resetPasswordForEmail(email, {
-    redirectTo: window.location.origin + "/my-first-site/pages/update-password.html"
+    redirectTo: window.location.origin + "/pages/update-password.html"
   });
 
   if (error) {
+    console.log("RESET PASSWORD ERROR:", error);
     alert("Қате: " + error.message);
-  } else {
-    alert("Поштаңызға парольді қалпына келтіру сілтемесі жіберілді");
+    return;
   }
+
+  alert("Поштаңызға сілтеме жіберілді");
 }
 
 /* ---------------- UPDATE PASSWORD ---------------- */
@@ -164,7 +185,7 @@ async function updatePassword() {
   }
 
   if (newPassword.length < 6) {
-    alert("Жаңа пароль кемінде 6 символ болуы керек");
+    alert("Пароль кемінде 6 символ болуы керек");
     return;
   }
 
@@ -173,28 +194,11 @@ async function updatePassword() {
   });
 
   if (error) {
+    console.log("UPDATE PASSWORD ERROR:", error);
     alert("Қате: " + error.message);
-  } else {
-    alert("Пароль сәтті өзгертілді");
-    window.location.href = "login.html";
+    return;
   }
+
+  alert("Пароль өзгертілді");
+  window.location.href = "login.html";
 }
-
-/* ---------------- REVEAL ANIMATION ---------------- */
-
-function revealOnScroll() {
-  const reveals = document.querySelectorAll(".reveal");
-
-  reveals.forEach((element) => {
-    const windowHeight = window.innerHeight;
-    const elementTop = element.getBoundingClientRect().top;
-    const visiblePoint = 100;
-
-    if (elementTop < windowHeight - visiblePoint) {
-      element.classList.add("active");
-    }
-  });
-}
-
-window.addEventListener("scroll", revealOnScroll);
-window.addEventListener("load", revealOnScroll);

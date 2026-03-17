@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Жеке кабинет</title>
+  <link rel="stylesheet" href="cabinet.css">
+</head>
+<body>
+
+  <div class="container">
+    <aside class="sidebar">
+      <h2 class="logo">MAGISTER</h2>
+
+      <ul class="menu">
+        <li><a href="index.html">🏠 Кабинет</a></li>
+        <li><a href="profile.html">👤 Профиль</a></li>
+        <li><a href="subjects.html">📚 Пәндер</a></li>
+        <li><a href="tasks.html">📝 Тапсырмалар</a></li>
+      </ul>
+    </aside>
+
+    <main class="main">
+        <div class="header">
+            <div class="welcome-box">
+                <h1 id="welcome-title">Сәлем ! 👋</h1>
+                <p id="welcome-subtitle">Қош келдіңіз, жеке кабинетіңізге кірдіңіз.</p>
+             </div>
+
+             <button class="logout">Шығу</button>
+</div>
+
+      <div class="cards">
+        <div class="card">
+          <h3>👤 Профиль</h3>
+          <p>Жеке мәліметтеріңізді қараңыз</p>
+          <a href="profile.html">Ашу</a>
+        </div>
+
+        <div class="card">
+          <h3>📚 Пәндер</h3>
+          <p>Сізге қолжетімді пәндер тізімі</p>
+          <a href="subjects.html">Ашу</a>
+        </div>
+
+        <div class="card">
+          <h3>📝 Тапсырмалар</h3>
+          <p>Барлық тапсырмалар мен тесттер</p>
+          <a href="tasks.html">Ашу</a>
+        </div>
+
+        <div class="card">
+          <h3>📊 Нәтиже</h3>
+          <p>Прогресс пен ұпайларды қарау</p>
+          <a href="#">Ашу</a>
+        </div>
+      </div>
+    </main>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="cabinet.js"></script>
+</body>
+</html>

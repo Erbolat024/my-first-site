@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Сабақ</title>
+  <link rel="stylesheet" href="cabinet.css" />
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f5f6fb;
+      color: #222;
+    }
+
+    .lesson-item-page {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 40px 24px 60px;
+    }
+
+    .back-btn {
+      display: inline-block;
+      margin-bottom: 24px;
+      text-decoration: none;
+      color: #4c7cf6;
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    .lesson-top {
+      background: #fff;
+      border-radius: 24px;
+      padding: 32px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+      margin-bottom: 24px;
+    }
+
+    .lesson-number {
+      font-size: 18px;
+      color: #6b7280;
+      margin-bottom: 8px;
+    }
+
+    .lesson-title {
+      font-size: 40px;
+      line-height: 1.2;
+      margin: 0 0 14px;
+    }
+
+    .lesson-desc {
+      font-size: 18px;
+      color: #666;
+      margin: 0;
+    }
+
+    .video-card,
+    .theory-card {
+      background: #fff;
+      border-radius: 24px;
+      padding: 28px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+      margin-bottom: 24px;
+    }
+
+    .section-title {
+      font-size: 28px;
+      margin: 0 0 18px;
+    }
+
+    .video-frame {
+      width: 100%;
+      height: 500px;
+      border: none;
+      border-radius: 20px;
+      background: #e5e7eb;
+    }
+
+    .theory-text {
+      font-size: 18px;
+      line-height: 1.8;
+      color: #333;
+      white-space: pre-line;
+    }
+
+    .result-box {
+      margin-top: 20px;
+      padding: 16px;
+      border-radius: 14px;
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    .result-success {
+      background: #dcfce7;
+      color: #166534;
+    }
+
+    .result-fail {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+
+    .result-empty {
+      background: #f3f4f6;
+      color: #6b7280;
+    }
+
+    .actions {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-top: 28px;
+    }
+
+    .main-btn {
+      display: inline-block;
+      text-decoration: none;
+      background: #4c7cf6;
+      color: #fff;
+      padding: 14px 24px;
+      border-radius: 14px;
+      font-size: 18px;
+      font-weight: 600;
+      transition: 0.2s ease;
+    }
+
+    .main-btn:hover {
+      background: #356df3;
+    }
+
+    .secondary-btn {
+      background: #fff;
+      color: #4c7cf6;
+      border: 2px solid #4c7cf6;
+    }
+
+    .secondary-btn:hover {
+      background: #eef4ff;
+    }
+
+    @media (max-width: 768px) {
+      .lesson-item-page {
+        padding: 20px 16px 40px;
+      }
+
+      .lesson-top,
+      .video-card,
+      .theory-card {
+        padding: 20px;
+      }
+
+      .lesson-title {
+        font-size: 28px;
+      }
+
+      .section-title {
+        font-size: 22px;
+      }
+
+      .video-frame {
+        height: 240px;
+      }
+
+      .actions {
+        flex-direction: column;
+      }
+
+      .main-btn {
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="lesson-item-page">
+    <a href="javascript:history.back()" class="back-btn">← Артқа қайту</a>
+
+    <div class="lesson-top">
+      <div class="lesson-number" id="lessonNumber">Сабақ</div>
+      <h1 class="lesson-title" id="lessonTitle">Сабақ атауы</h1>
+      <p class="lesson-desc" id="lessonDesc">Қысқаша сипаттама</p>
+    </div>
+
+    <div class="video-card">
+      <h2 class="section-title">🎥 Видео сабақ</h2>
+      <iframe
+        id="lessonVideo"
+        class="video-frame"
+        src=""
+        allowfullscreen>
+      </iframe>
+    </div>
+
+    <div class="theory-card">
+      <h2 class="section-title">📖 Теория</h2>
+      <div class="theory-text" id="lessonTheory">
+        Теория жүктелуде...
+      </div>
+
+      <div class="result-box" id="lessonResult"></div>
+
+      <div class="actions">
+        <a href="#" id="testBtn" class="main-btn">Тест тапсыру</a>
+        <a href="subject-biology.html" class="main-btn secondary-btn">Бөлімдерге қайту</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const lessonData = {
+      1: {
+        title: "Жасуша теориясы",
+        desc: "Жасуша туралы негізгі түсініктер мен жасуша теориясының қағидалары.",
+        video: "https://www.youtube.com/embed/URUJD5NEXC8",
+        theory: `Жасуша — тірі ағзалардың құрылымдық, қызметтік және генетикалық негізгі бірлігі.
+
+Жасуша теориясының негізгі қағидалары:
+1. Барлық тірі ағзалар жасушалардан тұрады.
+2. Жасуша — тіршіліктің ең кіші бірлігі.
+3. Жаңа жасушалар тек бұрынғы жасушалардың бөлінуі арқылы пайда болады.
+
+Жасуша теориясы биология ғылымының дамуына үлкен үлес қосты. Бұл теория барлық тірі ағзалардың шығу тегі мен құрылысының ортақтығын дәлелдейді.`
+      },
+      2: {
+        title: "Жасуша құрылысы",
+        desc: "Жасушаның негізгі бөліктері және олардың қызметі.",
+        video: "https://www.youtube.com/embed/8IlzKri08kk",
+        theory: `Жасушаның негізгі бөліктері:
+1. Жасуша мембранасы
+2. Цитоплазма
+3. Ядро
+
+Мембрана жасушаны қоршап тұрады және заттардың ішке енуі мен сыртқа шығуын реттейді.
+Цитоплазмада жасушаның тіршілік әрекетіне қажетті үрдістер жүреді.
+Ядро тұқымқуалаушылық ақпаратты сақтайды және жасуша қызметін басқарады.`
+      },
+      3: {
+        title: "Жасуша мембранасы",
+        desc: "Мембрананың құрылысы мен өткізгіштік қызметі.",
+        video: "https://www.youtube.com/embed/dPKvHrD1eS4",
+        theory: `Жасуша мембранасы — жасушаны сыртқы ортадан бөліп тұратын жұқа қабықша.
+
+Негізгі қызметтері:
+1. Қорғаныш қызметі
+2. Зат алмасуды реттеу
+3. Жасуша мен сыртқы ортаның байланысын қамтамасыз ету
+
+Мембрана жартылай өткізгіш қасиетке ие.`
+      },
+      4: {
+        title: "Органоидтар",
+        desc: "Жасуша органоидтары және олардың атқаратын қызметтері.",
+        video: "https://www.youtube.com/embed/5qX9Wl9jYI8",
+        theory: `Жасушада әртүрлі органоидтар болады:
+- Митохондрия
+- Рибосома
+- Эндоплазмалық тор
+- Гольджи жиынтығы
+- Лизосома
+
+Әр органоидтың өзіндік қызметі бар. Мысалы, митохондрия энергия өндіреді, ал рибосома ақуыз синтездейді.`
+      },
+      5: {
+        title: "Ядро және хромосомалар",
+        desc: "Ядроның рөлі және хромосомалардың маңызы.",
+        video: "https://www.youtube.com/embed/3gKQSj0pX8A",
+        theory: `Ядро — жасушаның маңызды бөлігі. Ол тұқымқуалаушылық ақпаратты сақтайды.
+
+Хромосомалар ядрода орналасады. Олар ДНҚ мен ақуыздардан тұрады.
+Хромосомалар арқылы ата-анадан балаға белгілер беріледі.`
+      },
+      6: {
+        title: "ДНҚ құрылысы",
+        desc: "ДНҚ молекуласының құрылысы мен қызметі.",
+        video: "https://www.youtube.com/embed/8kK2zwjRV0M",
+        theory: `ДНҚ — дезоксирибонуклеин қышқылы. Ол генетикалық ақпаратты сақтайды.
+
+ДНҚ екі тізбекті шиыршық түрінде болады.
+Оның құрамына нуклеотидтер кіреді:
+- аденин
+- тимин
+- гуанин
+- цитозин
+
+ДНҚ тұқымқуалаушылықтың материалдық негізі болып табылады.`
+      },
+      7: {
+        title: "РНҚ түрлері",
+        desc: "РНҚ-ның негізгі түрлері және олардың қызметтері.",
+        video: "https://www.youtube.com/embed/fKfYkb2G-S8",
+        theory: `РНҚ — рибонуклеин қышқылы.
+
+Негізгі түрлері:
+1. аРНҚ — ақпараттық
+2. тРНҚ — тасымалдаушы
+3. рРНҚ — рибосомалық
+
+РНҚ ақуыз синтезіне қатысады және генетикалық ақпараттың жүзеге асуына көмектеседі.`
+      },
+      8: {
+        title: "Ақуыз биосинтезі",
+        desc: "Ақуыздың түзілу кезеңдері.",
+        video: "https://www.youtube.com/embed/oefAI2x2CQM",
+        theory: `Ақуыз биосинтезі екі кезеңнен тұрады:
+1. Транскрипция
+2. Трансляция
+
+Транскрипция кезінде ДНҚ-дан аРНҚ түзіледі.
+Трансляция кезінде рибосомада ақуыз синтезделеді.
+
+Бұл процесс жасушадағы ең маңызды биохимиялық үрдістердің бірі.`
+      },
+      9: {
+        title: "Ферменттер",
+        desc: "Ферменттердің қасиеті, рөлі және әрекеті.",
+        video: "https://www.youtube.com/embed/qgVFkRn8f10",
+        theory: `Ферменттер — химиялық реакцияларды жылдамдататын биологиялық катализаторлар.
+
+Олардың ерекшеліктері:
+- нақтылық
+- белсенділік
+- температура мен ортаға тәуелділік
+
+Ферменттерсіз ағзадағы көптеген реакциялар өте баяу жүрер еді.`
+      },
+      10: {
+        title: "Зат алмасу",
+        desc: "Ағзадағы зат және энергия алмасу үрдістері.",
+        video: "https://www.youtube.com/embed/3XmZU72VQyQ",
+        theory: `Зат алмасу — ағзадағы барлық химиялық реакциялардың жиынтығы.
+
+Ол екіге бөлінеді:
+1. Ассимиляция — заттардың түзілуі
+2. Диссимиляция — заттардың ыдырауы
+
+Зат алмасу тіршіліктің негізгі белгісі болып табылады.`
+      }
+    };
+
+    const params = new URLSearchParams(window.location.search);
+    const lessonId = params.get("lesson");
+
+    const lesson = lessonData[lessonId];
+
+    const lessonNumberEl = document.getElementById("lessonNumber");
+    const lessonTitleEl = document.getElementById("lessonTitle");
+    const lessonDescEl = document.getElementById("lessonDesc");
+    const lessonVideoEl = document.getElementById("lessonVideo");
+    const lessonTheoryEl = document.getElementById("lessonTheory");
+    const testBtnEl = document.getElementById("testBtn");
+    const resultBox = document.getElementById("lessonResult");
+
+    if (lesson) {
+      lessonNumberEl.textContent = `${lessonId}-сабақ`;
+      lessonTitleEl.textContent = lesson.title;
+      lessonDescEl.textContent = lesson.desc;
+      lessonVideoEl.src = lesson.video;
+      lessonTheoryEl.textContent = lesson.theory;
+      testBtnEl.href = `test.html?lesson=${lessonId}`;
+    } else {
+      lessonNumberEl.textContent = "Сабақ табылмады";
+      lessonTitleEl.textContent = "Қате";
+      lessonDescEl.textContent = "Сілтемені қайта тексеріп көріңіз";
+      lessonTheoryEl.textContent = "Бұл сабақ бойынша ақпарат әзірге енгізілмеген.";
+      lessonVideoEl.style.display = "none";
+      testBtnEl.style.display = "none";
+      resultBox.style.display = "none";
+    }
+
+    const progressData = JSON.parse(localStorage.getItem("biologyProgress")) || {};
+    const progress = progressData[lessonId];
+
+    if (lesson) {
+      if (!progress) {
+        resultBox.innerText = "⏳ Бұл сабақтың тесті әлі тапсырылмаған";
+        resultBox.className = "result-box result-empty";
+      } else if (progress.passed) {
+        resultBox.innerText = `✅ Соңғы нәтиже: ${progress.percent}% — Өтті`;
+        resultBox.className = "result-box result-success";
+      } else {
+        resultBox.innerText = `❌ Соңғы нәтиже: ${progress.percent}% — Өтпеді`;
+        resultBox.className = "result-box result-fail";
+      }
+    }
+  </script>
+</body>
+</html>

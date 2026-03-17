@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Пәндер</title>
+  <link rel="stylesheet" href="cabinet.css">
+</head>
+<body>
+
+  <div class="container">
+
+    <aside class="sidebar">
+      <h2 class="logo">MAGISTER</h2>
+
+      <ul class="menu">
+        <li><a href="index.html">🏠 Кабинет</a></li>
+        <li><a href="profile.html">👤 Профиль</a></li>
+        <li><a href="subjects.html" class="active">📚 Пәндер</a></li>
+        <li><a href="tasks.html">📝 Тапсырмалар</a></li>
+      </ul>
+    </aside>
+
+    <main class="main">
+      <div class="header">
+        <div class="welcome-box">
+          <h1>Пәндер</h1>
+          <p>Сізге қолжетімді пәндер тізімі</p>
+        </div>
+
+        <button class="logout">Шығу</button>
+      </div>
+
+      <div class="cards">
+
+        <div class="card" data-subject="Ағылшын">
+          <h3>🇬🇧 Ағылшын</h3>
+          <p>Грамматика, сөздік қор, оқу және тыңдалым материалдары.</p>
+          <a href="subject-english.html" class="open-btn">Ашу</a>
+        </div>
+
+        <div class="card" data-subject="Математикалық сауаттылық">
+          <h3>➕ Математикалық сауаттылық</h3>
+          <p>Есептер, логика, формулалар және практикалық тапсырмалар.</p>
+          <a href="subject-math.html" class="open-btn">Ашу</a>
+        </div>
+
+        <div class="card" data-subject="Оқу сауаттылық">
+          <h3>📖 Оқу сауаттылық</h3>
+          <p>Мәтінмен жұмыс, талдау, түсіну және жауап беру дағдылары.</p>
+          <a href="subject-reading.html" class="open-btn">Ашу</a>
+        </div>
+
+        <div class="card" data-subject="Биология">
+          <h3>🧬 Биология</h3>
+          <p>Тірі ағзалар, адам анатомиясы, генетика және зертханалық тақырыптар.</p>
+          <a href="subject-biology.html" class="open-btn">Ашу</a>
+        </div>
+
+        <div class="card" data-subject="Химия">
+          <h3>⚗️ Химия</h3>
+          <p>Химиялық реакциялар, формулалар, элементтер және есептер.</p>
+          <a href="subject-chemistry.html" class="open-btn">Ашу</a>
+        </div>
+
+      </div>
+    </main>
+
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="cabinet.js"></script>
+</body>
+</html>

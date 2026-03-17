@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Биология</title>
+  <link rel="stylesheet" href="cabinet.css" />
+
+  <style>
+    .back-btn {
+  display: inline-block;
+  margin-bottom: 20px;
+  text-decoration: none;
+  color: #4c7cf6;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.back-btn:hover {
+  text-decoration: underline;
+}
+    .biology-page {
+      padding: 40px;
+      background: #f5f6fb;
+      min-height: 100vh;
+    }
+
+    .biology-header {
+      margin-bottom: 30px;
+    }
+
+    .biology-header h1 {
+      font-size: 52px;
+      font-weight: 700;
+      color: #222;
+      margin: 0 0 10px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .biology-header p {
+      font-size: 22px;
+      color: #666;
+      margin: 0;
+    }
+
+    .biology-sections {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 30px;
+    }
+
+    .section-card {
+      background: #ffffff;
+      border-radius: 28px;
+      padding: 30px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      min-height: 260px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .section-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.1);
+    }
+
+    .section-top {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .section-number {
+      font-size: 22px;
+      color: #666;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .section-title {
+      font-size: 32px;
+      line-height: 1.25;
+      color: #222;
+      font-weight: 700;
+      margin: 0;
+    }
+
+    .section-lessons {
+      font-size: 22px;
+      color: #777;
+      margin: 0;
+    }
+
+    .open-btn {
+      display: inline-block;
+      width: fit-content;
+      background: #4c7cf6;
+      color: #fff;
+      text-decoration: none;
+      padding: 14px 28px;
+      border-radius: 16px;
+      font-size: 22px;
+      font-weight: 600;
+      transition: background 0.2s ease, transform 0.2s ease;
+    }
+
+    .open-btn:hover {
+      background: #356df3;
+      transform: scale(1.03);
+    }
+
+    @media (max-width: 1200px) {
+      .biology-sections {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .biology-page {
+        padding: 20px;
+      }
+
+      .biology-header h1 {
+        font-size: 34px;
+      }
+
+      .biology-header p {
+        font-size: 18px;
+      }
+
+      .biology-sections {
+        grid-template-columns: 1fr;
+      }
+
+      .section-title {
+        font-size: 24px;
+      }
+
+      .section-number,
+      .section-lessons,
+      .open-btn {
+        font-size: 18px;
+      }
+    }
+    
+  </style>
+</head>
+<body>
+  <div class="biology-page">
+    <a href="subjects.html" class="back-btn">← Пәндерге қайту</a>
+    <div class="biology-header">
+      <h1>🧬 Биология</h1>
+      <p>Барлық биология материалдары осы жерде</p>
+    </div>
+
+    <div class="biology-sections">
+      <div class="section-card">
+        <div class="section-top">
+          <div class="section-number">🧬 1-бөлім</div>
+          <h2 class="section-title">Жасуша және биохимия</h2>
+          <p class="section-lessons">1–10 сабақ</p>
+        </div>
+        <a href="lesson.html?section=1" class="open-btn">Ашу</a>
+      </div>
+
+      <div class="section-card">
+        <div class="section-top">
+          <div class="section-number">🫀 2-бөлім</div>
+          <h2 class="section-title">Адам анатомиясы</h2>
+          <p class="section-lessons">11–20 сабақ</p>
+        </div>
+        <a href="lesson.html?section=2" class="open-btn">Ашу</a>
+      </div>
+
+      <div class="section-card">
+        <div class="section-top">
+          <div class="section-number">🧪 3-бөлім</div>
+          <h2 class="section-title">Генетика</h2>
+          <p class="section-lessons">21–30 сабақ</p>
+        </div>
+        <a href="lesson.html?section=3" class="open-btn">Ашу</a>
+      </div>
+
+      <div class="section-card">
+        <div class="section-top">
+          <div class="section-number">🐒 4-бөлім</div>
+          <h2 class="section-title">Эволюция</h2>
+          <p class="section-lessons">31–40 сабақ</p>
+        </div>
+        <a href="lesson.html?section=4" class="open-btn">Ашу</a>
+      </div>
+
+      <div class="section-card">
+        <div class="section-top">
+          <div class="section-number">🌍 5-бөлім</div>
+          <h2 class="section-title">Экология</h2>
+          <p class="section-lessons">41–50 сабақ</p>
+        </div>
+        <a href="lesson.html?section=5" class="open-btn">Ашу</a>
+      </div>
+
+      <div class="section-card">
+        <div class="section-top">
+          <div class="section-number">🌿 6-бөлім</div>
+          <h2 class="section-title">Өсімдіктер және микроорганизмдер</h2>
+          <p class="section-lessons">51–60 сабақ</p>
+        </div>
+        <a href="lesson.html?section=6" class="open-btn">Ашу</a>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
