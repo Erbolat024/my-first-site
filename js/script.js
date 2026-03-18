@@ -202,3 +202,31 @@ async function updatePassword() {
   alert("Пароль өзгертілді");
   window.location.href = "login.html";
 }
+
+/* ---------------- REVEAL ANIMATION ---------------- */
+
+function initRevealAnimation() {
+  const reveals = document.querySelectorAll(".reveal");
+
+  if (!reveals.length) return;
+
+  function revealOnScroll() {
+    const windowHeight = window.innerHeight;
+
+    reveals.forEach((element) => {
+      const elementTop = element.getBoundingClientRect().top;
+      const visiblePoint = 100;
+
+      if (elementTop < windowHeight - visiblePoint) {
+        element.classList.add("active");
+      }
+    });
+  }
+
+  revealOnScroll();
+  window.addEventListener("scroll", revealOnScroll);
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  initRevealAnimation();
+});

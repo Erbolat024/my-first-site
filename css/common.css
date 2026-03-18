@@ -6,8 +6,8 @@
 }
 
 body {
-  background: #d2d3d4;
-  color: #ffffff;
+  background: #f5f7fb;
+  color: #1f2937;
   line-height: 1.6;
 }
 
@@ -15,7 +15,6 @@ body {
 header,
 .header {
   display: flex;
-  
   justify-content: space-between;
   align-items: center;
   padding: 20px 8%;

@@ -112,12 +112,13 @@
   border-radius: 22px;
   padding: 20px;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.07);
-  transition: 0.3s;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .card:hover,
 .material-card:hover {
   transform: translateY(-6px);
+  box-shadow: 0 16px 30px rgba(0, 0, 0, 0.1);
 }
 
 .card img,
@@ -143,6 +144,7 @@
 .card p,
 .material-card p {
   color: #4b5563;
+  font-size: 16px;
 }
 
 /* CONTACT */
@@ -160,6 +162,18 @@
   font-size: 18px;
   color: #4b5563;
   margin-bottom: 20px;
+}
+
+/* REVEAL */
+.reveal {
+  opacity: 0;
+  transform: translateY(60px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.reveal.active {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 /* RESPONSIVE */
@@ -215,14 +229,4 @@
   .hero-text h1 {
     font-size: 34px;
   }
-}
-.reveal {
-  opacity: 0;
-  transform: translateY(60px);
-  transition: opacity 0.8s ease, transform 0.8s ease;
-}
-
-.reveal.active {
-  opacity: 1;
-  transform: translateY(0);
 }
