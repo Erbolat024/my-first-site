@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Тіркелу</title>
+
   <link rel="stylesheet" href="../css/common.css">
   <link rel="stylesheet" href="../css/register.css">
 </head>
@@ -17,13 +18,13 @@
     <h2>Тіркелу</h2>
     <p>Платформаға тіркеліп, материалдарға қол жеткізіңіз</p>
 
-   <input type="text" id="name" placeholder="Аты-жөні" />
-   <input type="text" id="phone" placeholder="Телефон номері" />
-   <input type="email" id="email" placeholder="Email" />
-   <input type="password" id="password" placeholder="Пароль" />
+    <input type="text" id="name" placeholder="Аты-жөні" />
+    <input type="text" id="phone" placeholder="Телефон номері" />
+    <input type="email" id="email" placeholder="Email" />
+    <input type="password" id="password" placeholder="Пароль" />
 
-   <button onclick="goToVerify()">Тіркелу</button>
-
+    <!-- 🔥 ОСЫ ЖЕР МАҢЫЗДЫ -->
+    <button onclick="registerUser()">Тіркелу</button>
 
     <div class="form-link">
       Аккаунтыңыз бар ма? <a href="login.html">Кіру</a>
@@ -31,7 +32,10 @@
 
   </div>
 
+  <!-- Supabase -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <!-- Сенің JS -->
   <script src="../js/script.js"></script>
 
 </body>

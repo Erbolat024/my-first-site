@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Email растау</title>
 
-  <!-- CSS (өзіңдегі файл атына қарай өзгерте аласың) -->
   <link rel="stylesheet" href="../css/common.css" />
   <link rel="stylesheet" href="../css/main.css" />
 
@@ -42,18 +41,20 @@
 
     .verify-box input {
       width: 100%;
-      padding: 12px;
+      padding: 14px;
       margin-bottom: 12px;
-      border-radius: 10px;
+      border-radius: 12px;
       border: 1px solid #ddd;
-      font-size: 14px;
+      font-size: 18px;
+      text-align: center;
+      letter-spacing: 6px;
     }
 
     .verify-box button {
       width: 100%;
       padding: 12px;
       border: none;
-      border-radius: 10px;
+      border-radius: 12px;
       background: #4c7cf6;
       color: white;
       font-size: 16px;
@@ -64,25 +65,111 @@
     .verify-box button:hover {
       background: #3b66d9;
     }
+
+    .resend {
+      margin-top: 12px;
+      font-size: 13px;
+      color: #888;
+      cursor: pointer;
+    }
+
+    .resend.disabled {
+      color: #ccc;
+      cursor: not-allowed;
+    }
+
+    .timer {
+      font-size: 12px;
+      color: #aaa;
+      margin-top: 5px;
+    }
   </style>
 </head>
 
 <body>
 
- <div class="verify-box">
-  <h2>Email растау</h2>
-  <p>Email-ге келген кодты енгізіңіз</p>
+  <div class="verify-box">
+    <h2>Email растау</h2>
+    <p>Email-ге келген кодты енгізіңіз</p>
 
-  <input type="text" id="verify-code" placeholder="Код" />
+    <input 
+      type="number" 
+      id="verify-code" 
+      placeholder="------" 
+      maxlength="6"
+    />
 
-  <button onclick="verifyCode()">Растау</button>
-</div>
+    <button onclick="verifyCode()">Растау</button>
+
+    <div id="resendBtn" class="resend disabled">
+      Кодты қайта жіберу
+    </div>
+
+    <div id="timer" class="timer">
+      60 секунд күтіңіз
+    </div>
+  </div>
 
   <!-- Supabase -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <!-- Сенің script -->
   <script src="../js/script.js"></script>
+
+  <script>
+    let timeLeft = 60;
+    const timerEl = document.getElementById("timer");
+    const resendBtn = document.getElementById("resendBtn");
+
+    const countdown = setInterval(() => {
+      timeLeft--;
+      timerEl.textContent = timeLeft + " секунд күтіңіз";
+
+      if (timeLeft <= 0) {
+        clearInterval(countdown);
+        timerEl.textContent = "";
+        resendBtn.classList.remove("disabled");
+      }
+    }, 1000);
+
+    resendBtn.onclick = async () => {
+      if (resendBtn.classList.contains("disabled")) return;
+
+      const email = localStorage.getItem("pending_email");
+
+      if (!email) {
+        alert("Email табылмады");
+        return;
+      }
+
+      const { error } = await supabase.auth.resend({
+        type: "signup",
+        email: email
+      });
+
+      if (error) {
+        alert("Қате: " + error.message);
+        return;
+      }
+
+      alert("Код қайта жіберілді!");
+
+      // қайта таймер
+      timeLeft = 60;
+      resendBtn.classList.add("disabled");
+
+      const newCountdown = setInterval(() => {
+        timeLeft--;
+        timerEl.textContent = timeLeft + " секунд күтіңіз";
+
+        if (timeLeft <= 0) {
+          clearInterval(newCountdown);
+          timerEl.textContent = "";
+          resendBtn.classList.remove("disabled");
+        }
+      }, 1000);
+    };
+  </script>
 
 </body>
 </html>

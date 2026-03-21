@@ -37,7 +37,7 @@ async function registerUser() {
     return;
   }
 
-  const { data, error } = await supabaseClient.auth.signUp({
+  const { error } = await supabaseClient.auth.signUp({
     email: email,
     password: password,
     options: {
@@ -53,13 +53,12 @@ async function registerUser() {
     return;
   }
 
-  // 🔥 EMAIL сақтаймыз
   localStorage.setItem("pending_email", email);
+  localStorage.setItem("pending_name", name);
+  localStorage.setItem("pending_phone", phone);
 
   alert("Email-ге код жіберілді!");
-
-  // 🔥 VERIFY PAGE
-  window.location.href = "/pages/verify.html";
+  window.location.href = "verify.html";
 }
 
 /* ---------------- VERIFY OTP ---------------- */
@@ -76,10 +75,12 @@ async function verifyCode() {
 
   const code = codeInput.value.trim();
   const email = localStorage.getItem("pending_email");
+  const name = localStorage.getItem("pending_name");
+  const phone = localStorage.getItem("pending_phone");
 
   if (!email) {
     alert("Email табылмады, қайта тіркеліңіз");
-    window.location.href = "/pages/register.html";
+    window.location.href = "register.html";
     return;
   }
 
@@ -99,39 +100,35 @@ async function verifyCode() {
     return;
   }
 
-  // 🔥 PROFILE сақтау осы жерде (confirm болған соң)
-  const user = (await supabaseClient.auth.getUser()).data.user;
+  const {
+    data: { user }
+  } = await supabaseClient.auth.getUser();
 
   if (user) {
-    await supabaseClient.from("profiles").upsert([
-      {
-        id: user.id,
-        email: user.email
-      }
-    ]);
+    const { error: profileError } = await supabaseClient
+      .from("profiles")
+      .upsert([
+        {
+          id: user.id,
+          name: name,
+          phone: phone,
+          email: email,
+          available_subjects: []
+        }
+      ]);
+
+    if (profileError) {
+      alert("Профиль сақтау қатесі: " + profileError.message);
+      return;
+    }
   }
 
   localStorage.removeItem("pending_email");
+  localStorage.removeItem("pending_name");
+  localStorage.removeItem("pending_phone");
 
   alert("Аккаунт расталды!");
-  window.location.href = "/pages/login.html";
-}
-function goToVerify() {
-  const name = document.getElementById("name")?.value.trim();
-  const phone = document.getElementById("phone")?.value.trim();
-  const email = document.getElementById("email")?.value.trim();
-  const password = document.getElementById("password")?.value.trim();
-
-  if (!name || !phone || !email || !password) {
-    alert("Барлық өрісті толтырыңыз");
-    return;
-  }
-
-  // 🔥 сақтап қоямыз (кейін керек болады)
-  localStorage.setItem("pending_email", email);
-
-  // 🔥 өтеміз
-  window.location.href = "/pages/verify.html";
+  window.location.href = "../cabinet/index.html";
 }
 
 /* ---------------- LOGIN ---------------- */
@@ -174,6 +171,12 @@ async function loginUser() {
 async function logoutUser() {
   if (!supabaseClient) return;
 
-  await supabaseClient.auth.signOut();
+  const { error } = await supabaseClient.auth.signOut();
+
+  if (error) {
+    alert("Қате: " + error.message);
+    return;
+  }
+
   window.location.href = "../pages/login.html";
 }
