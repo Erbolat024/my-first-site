@@ -221,7 +221,7 @@ window.resetPassword = async function () {
   }
 
   const { error } = await supabaseClient.auth.resetPasswordForEmail(email, {
-    redirectTo: window.location.origin + "/pages/new-password.html"
+    redirectTo: "https://ERBOLAT024.github.io/magister-site/platforms/update-password.html"
   });
 
   if (error) {
