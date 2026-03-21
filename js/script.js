@@ -32,8 +32,11 @@ document.addEventListener("DOMContentLoaded", revealOnScroll);
 
 /* ---------------- REGISTER ---------------- */
 
-async function registerUser() {
-  if (!supabaseClient) return;
+window.registerUser = async function () {
+  if (!supabaseClient) {
+    alert("Supabase қосылмады");
+    return;
+  }
 
   const nameInput = document.getElementById("name");
   const phoneInput = document.getElementById("phone");
@@ -82,12 +85,15 @@ async function registerUser() {
 
   alert("Email-ге код жіберілді!");
   window.location.href = "verify.html";
-}
+};
 
 /* ---------------- VERIFY OTP ---------------- */
 
-async function verifyCode() {
-  if (!supabaseClient) return;
+window.verifyCode = async function () {
+  if (!supabaseClient) {
+    alert("Supabase қосылмады");
+    return;
+  }
 
   const codeInput = document.getElementById("verify-code");
 
@@ -152,12 +158,15 @@ async function verifyCode() {
 
   alert("Аккаунт расталды!");
   window.location.href = "../cabinet/index.html";
-}
+};
 
 /* ---------------- LOGIN ---------------- */
 
-async function loginUser() {
-  if (!supabaseClient) return;
+window.loginUser = async function () {
+  if (!supabaseClient) {
+    alert("Supabase қосылмады");
+    return;
+  }
 
   const emailInput = document.getElementById("email");
   const passwordInput = document.getElementById("password");
@@ -187,12 +196,49 @@ async function loginUser() {
 
   alert("Кіру сәтті өтті!");
   window.location.href = "../cabinet/index.html";
-}
+};
+
+/* ---------------- RESET PASSWORD ---------------- */
+
+window.resetPassword = async function () {
+  if (!supabaseClient) {
+    alert("Supabase қосылмады");
+    return;
+  }
+
+  const emailInput = document.getElementById("reset-email");
+
+  if (!emailInput) {
+    alert("Email өрісі табылмады");
+    return;
+  }
+
+  const email = emailInput.value.trim();
+
+  if (!email) {
+    alert("Email енгізіңіз");
+    return;
+  }
+
+  const { error } = await supabaseClient.auth.resetPasswordForEmail(email, {
+    redirectTo: window.location.origin + "/pages/new-password.html"
+  });
+
+  if (error) {
+    alert("Қате: " + error.message);
+    return;
+  }
+
+  alert("Поштаға сілтеме жіберілді ✅");
+};
 
 /* ---------------- LOGOUT ---------------- */
 
-async function logoutUser() {
-  if (!supabaseClient) return;
+window.logoutUser = async function () {
+  if (!supabaseClient) {
+    alert("Supabase қосылмады");
+    return;
+  }
 
   const { error } = await supabaseClient.auth.signOut();
 
@@ -202,4 +248,4 @@ async function logoutUser() {
   }
 
   window.location.href = "../pages/login.html";
-}
+};
