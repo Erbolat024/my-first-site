@@ -49,35 +49,89 @@ async function registerUser() {
   });
 
   if (error) {
-    console.log("FULL ERROR:", error);
     alert("Қате: " + error.message);
     return;
   }
 
-  const user = data?.user;
+  // 🔥 EMAIL сақтаймыз
+  localStorage.setItem("pending_email", email);
 
-  if (user) {
-    const { error: profileError } = await supabaseClient
-      .from("profiles")
-      .upsert([
-        {
-          id: user.id,
-          name: name,
-          phone: phone,
-          email: email,
-          available_subjects: []
-        }
-      ]);
+  alert("Email-ге код жіберілді!");
 
-    if (profileError) {
-      console.log("PROFILE ERROR:", profileError);
-      alert("Профиль сақтау қатесі: " + profileError.message);
-      return;
-    }
+  // 🔥 VERIFY PAGE
+  window.location.href = "/pages/verify.html";
+}
+
+/* ---------------- VERIFY OTP ---------------- */
+
+async function verifyCode() {
+  if (!supabaseClient) return;
+
+  const codeInput = document.getElementById("verify-code");
+
+  if (!codeInput) {
+    alert("Код өрісі табылмады");
+    return;
   }
 
-  alert("Тіркелу сәтті өтті!");
-  window.location.href = "login.html";
+  const code = codeInput.value.trim();
+  const email = localStorage.getItem("pending_email");
+
+  if (!email) {
+    alert("Email табылмады, қайта тіркеліңіз");
+    window.location.href = "/pages/register.html";
+    return;
+  }
+
+  if (!code) {
+    alert("Кодты енгізіңіз");
+    return;
+  }
+
+  const { error } = await supabaseClient.auth.verifyOtp({
+    email: email,
+    token: code,
+    type: "email"
+  });
+
+  if (error) {
+    alert("Қате: " + error.message);
+    return;
+  }
+
+  // 🔥 PROFILE сақтау осы жерде (confirm болған соң)
+  const user = (await supabaseClient.auth.getUser()).data.user;
+
+  if (user) {
+    await supabaseClient.from("profiles").upsert([
+      {
+        id: user.id,
+        email: user.email
+      }
+    ]);
+  }
+
+  localStorage.removeItem("pending_email");
+
+  alert("Аккаунт расталды!");
+  window.location.href = "/pages/login.html";
+}
+function goToVerify() {
+  const name = document.getElementById("name")?.value.trim();
+  const phone = document.getElementById("phone")?.value.trim();
+  const email = document.getElementById("email")?.value.trim();
+  const password = document.getElementById("password")?.value.trim();
+
+  if (!name || !phone || !email || !password) {
+    alert("Барлық өрісті толтырыңыз");
+    return;
+  }
+
+  // 🔥 сақтап қоямыз (кейін керек болады)
+  localStorage.setItem("pending_email", email);
+
+  // 🔥 өтеміз
+  window.location.href = "/pages/verify.html";
 }
 
 /* ---------------- LOGIN ---------------- */
@@ -107,7 +161,6 @@ async function loginUser() {
   });
 
   if (error) {
-    console.log("LOGIN ERROR:", error);
     alert("Қате: " + error.message);
     return;
   }
@@ -121,112 +174,6 @@ async function loginUser() {
 async function logoutUser() {
   if (!supabaseClient) return;
 
-  const { error } = await supabaseClient.auth.signOut();
-
-  if (error) {
-    console.log("LOGOUT ERROR:", error);
-    alert("Қате: " + error.message);
-    return;
-  }
-
-  alert("Сіз аккаунттан шықтыңыз");
+  await supabaseClient.auth.signOut();
   window.location.href = "../pages/login.html";
 }
-
-/* ---------------- RESET PASSWORD EMAIL ---------------- */
-
-async function resetPassword() {
-  if (!supabaseClient) return;
-
-  const emailInput = document.getElementById("reset-email");
-
-  if (!emailInput) {
-    alert("Email өрісі табылмады");
-    return;
-  }
-
-  const email = emailInput.value.trim();
-
-  if (!email) {
-    alert("Email енгізіңіз");
-    return;
-  }
-
-  const { error } = await supabaseClient.auth.resetPasswordForEmail(email, {
-    redirectTo: window.location.origin + "/pages/update-password.html"
-  });
-
-  if (error) {
-    console.log("RESET PASSWORD ERROR:", error);
-    alert("Қате: " + error.message);
-    return;
-  }
-
-  alert("Поштаңызға сілтеме жіберілді");
-}
-
-/* ---------------- UPDATE PASSWORD ---------------- */
-
-async function updatePassword() {
-  if (!supabaseClient) return;
-
-  const passwordInput = document.getElementById("new-password");
-
-  if (!passwordInput) {
-    alert("Жаңа пароль өрісі табылмады");
-    return;
-  }
-
-  const newPassword = passwordInput.value.trim();
-
-  if (!newPassword) {
-    alert("Жаңа пароль енгізіңіз");
-    return;
-  }
-
-  if (newPassword.length < 6) {
-    alert("Пароль кемінде 6 символ болуы керек");
-    return;
-  }
-
-  const { error } = await supabaseClient.auth.updateUser({
-    password: newPassword
-  });
-
-  if (error) {
-    console.log("UPDATE PASSWORD ERROR:", error);
-    alert("Қате: " + error.message);
-    return;
-  }
-
-  alert("Пароль өзгертілді");
-  window.location.href = "login.html";
-}
-
-/* ---------------- REVEAL ANIMATION ---------------- */
-
-function initRevealAnimation() {
-  const reveals = document.querySelectorAll(".reveal");
-
-  if (!reveals.length) return;
-
-  function revealOnScroll() {
-    const windowHeight = window.innerHeight;
-
-    reveals.forEach((element) => {
-      const elementTop = element.getBoundingClientRect().top;
-      const visiblePoint = 100;
-
-      if (elementTop < windowHeight - visiblePoint) {
-        element.classList.add("active");
-      }
-    });
-  }
-
-  revealOnScroll();
-  window.addEventListener("scroll", revealOnScroll);
-}
-
-document.addEventListener("DOMContentLoaded", () => {
-  initRevealAnimation();
-});
