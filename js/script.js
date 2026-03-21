@@ -7,6 +7,29 @@ if (typeof supabase !== "undefined") {
   supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
 }
 
+/* ---------------- REVEAL ANIMATION ---------------- */
+
+function revealOnScroll() {
+  const reveals = document.querySelectorAll(".reveal");
+
+  if (!reveals.length) return;
+
+  const windowHeight = window.innerHeight;
+
+  reveals.forEach((item) => {
+    const elementTop = item.getBoundingClientRect().top;
+    const elementVisible = 100;
+
+    if (elementTop < windowHeight - elementVisible) {
+      item.classList.add("active");
+    }
+  });
+}
+
+window.addEventListener("scroll", revealOnScroll);
+window.addEventListener("load", revealOnScroll);
+document.addEventListener("DOMContentLoaded", revealOnScroll);
+
 /* ---------------- REGISTER ---------------- */
 
 async function registerUser() {

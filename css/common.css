@@ -5,10 +5,23 @@
   font-family: Arial, sans-serif;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   background: #f5f7fb;
   color: #1f2937;
   line-height: 1.6;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  text-decoration: none;
 }
 
 /* HEADER */
@@ -161,5 +174,10 @@ nav a:hover,
 
   .logo span {
     font-size: 20px;
+  }
+
+  .logo img {
+    width: 65px;
+    height: 65px;
   }
 }
