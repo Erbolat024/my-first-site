@@ -249,3 +249,42 @@ window.logoutUser = async function () {
 
   window.location.href = "../pages/login.html";
 };
+/* ---------------- UPDATE PASSWORD ---------------- */
+
+window.updatePassword = async function () {
+  if (!supabaseClient) {
+    alert("Supabase қосылмады");
+    return;
+  }
+
+  const passwordInput = document.getElementById("new-password");
+
+  if (!passwordInput) {
+    alert("Пароль өрісі табылмады");
+    return;
+  }
+
+  const newPassword = passwordInput.value.trim();
+
+  if (!newPassword) {
+    alert("Жаңа парольді енгізіңіз");
+    return;
+  }
+
+  if (newPassword.length < 6) {
+    alert("Пароль кемінде 6 символ болуы керек");
+    return;
+  }
+
+  const { error } = await supabaseClient.auth.updateUser({
+    password: newPassword
+  });
+
+  if (error) {
+    alert("Қате: " + error.message);
+    return;
+  }
+
+  alert("Пароль сәтті жаңартылды ✅");
+  window.location.href = "login.html";
+};
