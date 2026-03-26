@@ -189,27 +189,28 @@ async function loadGroupStudents(groupId) {
   studentsList.innerHTML = "";
 
   data.forEach((item) => {
-    const student = profiles.find((p) => p.id === item.student_id);
+  const student = profiles.find((p) => p.id === item.student_id);
+  if (!student) return;
 
-    const div = document.createElement("div");
-    div.className = "student-item";
-    div.innerHTML = `
-      <div class="student-info">
-        <div class="student-name">${student?.name || "Аты жоқ"}</div>
-        <div class="student-email">${student?.email || ""}</div>
-      </div>
-      <button class="remove-btn">Өшіру</button>
-    `;
+  const div = document.createElement("div");
+  div.className = "student-item";
+  div.innerHTML = `
+    <div class="student-info">
+      <div class="student-name">${student.name || "Аты жоқ"}</div>
+      <div class="student-email">${student.email || ""}</div>
+    </div>
+    <button class="remove-btn">Өшіру</button>
+  `;
 
-    studentsList.appendChild(div);
+  studentsList.appendChild(div);
 
-    const removeBtn = div.querySelector(".remove-btn");
-    if (removeBtn) {
-      removeBtn.addEventListener("click", () => {
-        removeStudentFromGroup(item.id, group.id || groupId);
-      });
-    }
-  });
+  const removeBtn = div.querySelector(".remove-btn");
+  if (removeBtn) {
+    removeBtn.addEventListener("click", () => {
+      removeStudentFromGroup(item.id, groupId);
+    });
+  }
+});
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
