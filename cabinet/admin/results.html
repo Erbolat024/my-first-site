@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Нәтижелер</title>
+  <link rel="stylesheet" href="admin.css" />
+  <link rel="stylesheet" href="admin-results.css" />
+</head>
+<body>
+
+  <div class="layout">
+    <aside class="sidebar" id="sidebar">
+      <h2 class="logo">Admin</h2>
+      <ul id="menu"></ul>
+    </aside>
+
+    <main class="main">
+      <h1>Оқушылар нәтижелері</h1>
+      <p class="page-subtitle">
+        Топ, пән және күн бойынша фильтр қойып, оқушылардың орташа нәтижелерін қараңыз
+      </p>
+
+      <div class="form-box filter-box">
+        <div class="form-group">
+          <label for="group">Топ</label>
+          <select id="group">
+            <option value="">Топ таңдаңыз</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="subject">Пән</label>
+          <select id="subject">
+            <option value="">Барлығы</option>
+            <option value="Биология">Биология</option>
+            <option value="Химия">Химия</option>
+            <option value="Ағылшын">Ағылшын</option>
+            <option value="Оқу сауаттылығы">Оқу сауаттылығы</option>
+            <option value="Математикалық сауаттылық">Математикалық сауаттылық</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="date-from">Дата басы</label>
+          <input type="date" id="date-from" />
+        </div>
+
+        <div class="form-group">
+          <label for="date-to">Дата аяғы</label>
+          <input type="date" id="date-to" />
+        </div>
+
+        <div class="form-group button-group">
+          <button id="filter-btn">Фильтр</button>
+        </div>
+      </div>
+
+      <h2>Нәтижелер кестесі</h2>
+      <p id="results-subtitle" class="results-subtitle">
+        Топ пен пәнді таңдап, фильтрді басыңыз
+      </p>
+
+      <div id="results-container" class="results-box">
+        <div class="empty-state">Топ пен пәнді таңдап, фильтрді басыңыз.</div>
+      </div>
+    </main>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="admin-layout.js"></script>
+  <script src="admin-results.js"></script>
+</body>
+</html>

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Пәнге доступ беру</title>
+  <link rel="stylesheet" href="admin.css" />
+</head>
+<body>
+
+<div class="layout">
+  <aside class="sidebar" id="sidebar">
+    <h2 class="logo">Admin</h2>
+    <ul id="menu"></ul>
+  </aside>
+
+  <main class="main">
+    <h1>Пәнге доступ беру</h1>
+
+    <div class="access-layout">
+      <div class="access-users-card">
+        <div class="access-card-title">Оқушылар тізімі</div>
+
+        <input
+          type="text"
+          id="student-search"
+          class="search"
+          placeholder="Оқушыны іздеу..."
+        />
+
+        <div id="students-list" class="students-list"></div>
+      </div>
+
+      <div class="access-subjects-card">
+        <div class="access-card-title">Пәндер</div>
+
+        <div id="selected-student-info" class="selected-student-info">
+          Оқушыны таңдаңыз
+        </div>
+
+        <div id="subjects-box" class="subjects-box hidden">
+          <label class="subject-check">
+            <input type="checkbox" value="Биология" />
+            <span>Биология</span>
+          </label>
+
+          <label class="subject-check">
+            <input type="checkbox" value="Химия" />
+            <span>Химия</span>
+          </label>
+
+          <label class="subject-check">
+            <input type="checkbox" value="Ағылшын" />
+            <span>Ағылшын</span>
+          </label>
+
+          <label class="subject-check">
+            <input type="checkbox" value="Оқу сауаттылығы" />
+            <span>Оқу сауаттылығы</span>
+          </label>
+
+          <label class="subject-check">
+            <input type="checkbox" value="Математикалық сауаттылық" />
+            <span>Математикалық сауаттылық</span>
+          </label>
+
+          <button id="save-access-btn" class="primary-btn" type="button">
+            Сақтау
+          </button>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+<script src="admin-layout.js"></script>
+<script src="access.js"></script>
+
+</body>
+</html>

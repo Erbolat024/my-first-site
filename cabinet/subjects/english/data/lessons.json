@@ -1,0 +1,66 @@
+[
+  {
+    "id": 1,
+    "sectionId": 1,
+    "title": "Introducing Yourself",
+    "description": "Өзі туралы таныстыру және негізгі жеке ақпаратты айту",
+    "video": "https://www.youtube.com/embed/VIDEO_ID_1",
+    "summary": "Бұл сабақта оқушылар өздерін ағылшын тілінде таныстыруды үйренеді. Аты-жөні, жасы, тұратын жері және қызығушылықтары туралы қарапайым сөйлемдер құрастырады."
+  },
+  {
+    "id": 2,
+    "sectionId": 1,
+    "title": "Personal Information Questions",
+    "description": "Жеке ақпаратқа қатысты сұрақтар қою және оларға жауап беру",
+    "video": "https://www.youtube.com/embed/VIDEO_ID_2",
+    "summary": "Бұл сабақта оқушылар What is your name?, How old are you?, Where are you from? сияқты сұрақтарды құрастыруды және оларға дұрыс жауап беруді меңгереді."
+  },
+  {
+    "id": 3,
+    "sectionId": 1,
+    "title": "The Verb to Be",
+    "description": "am, is, are формаларын қолдану",
+    "video": "https://www.youtube.com/embed/VIDEO_ID_3",
+    "summary": "Бұл сабақта to be етістігінің негізгі формалары қарастырылады. Оқушылар am, is, are формаларын дұрыс қолданып, қарапайым сөйлемдер құрастырады."
+  },
+  {
+    "id": 4,
+    "sectionId": 1,
+    "title": "Personal Pronouns",
+    "description": "Жіктеу есімдіктері: I, you, he, she, it, we, they",
+    "video": "https://www.youtube.com/embed/VIDEO_ID_4",
+    "summary": "Бұл сабақта жіктеу есімдіктері оқытылады. Оқушылар әр есімдіктің мағынасын түсініп, оларды сөйлем ішінде дұрыс қолдануды үйренеді."
+  },
+  {
+    "id": 5,
+    "sectionId": 1,
+    "title": "Countries and Nationalities",
+    "description": "Елдер мен ұлт атауларын үйрену",
+    "video": "https://www.youtube.com/embed/VIDEO_ID_5",
+    "summary": "Бұл сабақта оқушылар елдер мен ұлт атауларын ағылшын тілінде айта алады. Сонымен қатар қай елден екенін айтуға арналған сөйлем үлгілерін меңгереді."
+  },
+  {
+    "id": 6,
+    "sectionId": 1,
+    "title": "Talking About Age and Origin",
+    "description": "Жас және шыққан жер туралы айту",
+    "video": "https://www.youtube.com/embed/VIDEO_ID_6",
+    "summary": "Бұл сабақта оқушылар өз жасы мен туған жері туралы ағылшын тілінде айтуға жаттығады. Қарапайым жауаптар мен қысқа диалогтар құрастырады."
+  },
+  {
+    "id": 7,
+    "sectionId": 1,
+    "title": "Spelling Names",
+    "description": "Есімдерді әріптеп айту және жазу",
+    "video": "https://www.youtube.com/embed/VIDEO_ID_7",
+    "summary": "Бұл сабақта ағылшын әліпбиі негізінде есімдерді әріптеп айту қарастырылады. Оқушылар өз есімін және басқа сөздерді дұрыс дыбыстауға жаттығады."
+  },
+  {
+    "id": 8,
+    "sectionId": 1,
+    "title": "Writing a Short Personal Profile",
+    "description": "Өзі туралы қысқаша мәтін жазу",
+    "video": "https://www.youtube.com/embed/VIDEO_ID_8",
+    "summary": "Бұл сабақта оқушылар өздері туралы қысқа таныстыру мәтінін жазады. Аты, жасы, елі, отбасы және қызығушылықтары туралы бірнеше сөйлем құрастырады."
+  }
+]

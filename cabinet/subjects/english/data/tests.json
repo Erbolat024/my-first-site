@@ -1,0 +1,160 @@
+{
+  "1": [
+    {
+      "question": "What is the correct way to introduce yourself?",
+      "options": ["My name is...", "I name...", "Name me...", "I am name"],
+      "correct": 0
+    },
+    {
+      "question": "Which question is correct?",
+      "options": ["What is your name?", "What your name?", "Name what you?", "Your name what?"],
+      "correct": 0
+    },
+    {
+      "question": "How do you answer: 'What is your name?'",
+      "options": ["My name is Alex", "I name Alex", "Name Alex", "Alex I"],
+      "correct": 0
+    },
+    {
+      "question": "Which sentence is correct?",
+      "options": ["I am a student", "I is a student", "I are a student", "I be a student"],
+      "correct": 0
+    },
+    {
+      "question": "Which word is a pronoun?",
+      "options": ["I", "Book", "Run", "Happy"],
+      "correct": 0
+    },
+    {
+      "question": "Choose the correct sentence:",
+      "options": ["She is my friend", "She are my friend", "She am my friend", "She be my friend"],
+      "correct": 0
+    },
+    {
+      "question": "What does 'I' mean?",
+      "options": ["Мен", "Сен", "Ол", "Біз"],
+      "correct": 0
+    },
+    {
+      "question": "What is the correct form?",
+      "options": ["They are students", "They is students", "They am students", "They be students"],
+      "correct": 0
+    },
+    {
+      "question": "Which is correct?",
+      "options": ["He is 15 years old", "He are 15", "He am 15", "He be 15"],
+      "correct": 0
+    },
+    {
+      "question": "Choose correct question:",
+      "options": ["Where are you from?", "Where you from?", "From where you?", "You from where?"],
+      "correct": 0
+    }
+  ],
+
+  "2": [
+    {
+      "question": "Which is a correct question?",
+      "options": ["How old are you?", "How you old?", "Old are you how?", "You how old?"],
+      "correct": 0
+    },
+    {
+      "question": "Correct answer:",
+      "options": ["I am 16 years old", "I 16 years", "I am 16", "16 I am"],
+      "correct": 0
+    },
+    {
+      "question": "Which word is used for place?",
+      "options": ["Where", "What", "Who", "When"],
+      "correct": 0
+    },
+    {
+      "question": "Correct question:",
+      "options": ["Where are you from?", "Where you are from?", "From you where?", "Where from you?"],
+      "correct": 0
+    },
+    {
+      "question": "Correct answer:",
+      "options": ["I am from Kazakhstan", "I from Kazakhstan", "From Kazakhstan I", "Kazakhstan I am"],
+      "correct": 0
+    },
+    {
+      "question": "Which is correct?",
+      "options": ["What is your age?", "What your age?", "Age your what?", "Your age what?"],
+      "correct": 0
+    },
+    {
+      "question": "Choose correct:",
+      "options": ["Who are you?", "Who you are?", "You who are?", "Who are you is?"],
+      "correct": 0
+    },
+    {
+      "question": "Correct answer:",
+      "options": ["I am a student", "I student", "Student I", "Am I student"],
+      "correct": 0
+    },
+    {
+      "question": "Which is correct?",
+      "options": ["What is your country?", "Country your what?", "Your country what?", "What country you?"],
+      "correct": 0
+    },
+    {
+      "question": "Correct answer:",
+      "options": ["My country is Kazakhstan", "Kazakhstan my country", "My Kazakhstan country", "Country Kazakhstan"],
+      "correct": 0
+    }
+  ],
+
+  "3": [
+    {
+      "question": "Choose correct:",
+      "options": ["I am happy", "I is happy", "I are happy", "I be happy"],
+      "correct": 0
+    },
+    {
+      "question": "Correct form:",
+      "options": ["She is a teacher", "She are teacher", "She am teacher", "She be teacher"],
+      "correct": 0
+    },
+    {
+      "question": "Choose correct:",
+      "options": ["They are friends", "They is friends", "They am friends", "They be friends"],
+      "correct": 0
+    },
+    {
+      "question": "Correct form:",
+      "options": ["We are students", "We is students", "We am students", "We be students"],
+      "correct": 0
+    },
+    {
+      "question": "Which is correct?",
+      "options": ["He is my brother", "He are my brother", "He am my brother", "He be my brother"],
+      "correct": 0
+    },
+    {
+      "question": "Choose correct:",
+      "options": ["It is a dog", "It are a dog", "It am a dog", "It be a dog"],
+      "correct": 0
+    },
+    {
+      "question": "Correct question:",
+      "options": ["Are you ready?", "You are ready?", "Ready you are?", "Are ready you?"],
+      "correct": 0
+    },
+    {
+      "question": "Correct negative:",
+      "options": ["I am not tired", "I not am tired", "I am tired not", "Not I am tired"],
+      "correct": 0
+    },
+    {
+      "question": "Choose correct:",
+      "options": ["She is not here", "She not is here", "She is here not", "Not she is here"],
+      "correct": 0
+    },
+    {
+      "question": "Correct:",
+      "options": ["They are not late", "They not are late", "They are late not", "Not they are late"],
+      "correct": 0
+    }
+  ]
+}

@@ -7,121 +7,44 @@ if (typeof supabase !== "undefined") {
   supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
 }
 
-async function checkUser() {
-  if (!supabaseClient) return null;
+document.addEventListener("DOMContentLoaded", async () => {
+  const sidebar = document.getElementById("sidebar");
+  const menuToggle = document.getElementById("menu-toggle");
+  const logoutBtn = document.getElementById("logout-btn");
+  const userName = document.getElementById("user-name");
 
-  const { data, error } = await supabaseClient.auth.getUser();
-
-  if (error || !data.user) {
-    window.location.href = "../pages/login.html";
-    return null;
+  if (menuToggle && sidebar) {
+    menuToggle.addEventListener("click", () => {
+      sidebar.classList.toggle("hidden");
+    });
   }
 
-  return data.user;
-}
+  if (supabaseClient) {
+    const {
+      data: { user },
+      error,
+    } = await supabaseClient.auth.getUser();
 
-async function logoutUser() {
-  try {
-    if (!supabaseClient) return;
-
-    const { error } = await supabaseClient.auth.signOut();
-
-    if (error) {
-      alert("Шығу қатесі: " + error.message);
+    if (error || !user) {
+      window.location.href = "../index.html";
       return;
     }
 
-    window.location.href = "../pages/login.html";
-  } catch (err) {
-    alert("Қате шықты: " + err.message);
-  }
-}
+    const fullName =
+      user.user_metadata?.name ||
+      user.user_metadata?.full_name ||
+      user.email?.split("@")[0] ||
+      "қолданушы";
 
-async function loadUserData() {
-  if (!supabaseClient) return;
-
-  const user = await checkUser();
-  if (!user) return;
-
-  const emailEl = document.getElementById("user-email");
-  const nameEl = document.getElementById("user-name");
-  const phoneEl = document.getElementById("user-phone");
-
-  const { data, error } = await supabaseClient
-    .from("profiles")
-    .select("name, phone, email")
-    .eq("id", user.id)
-    .single();
-
-  if (error) {
-    console.error("Профильді оқу қатесі:", error.message);
-
-    if (emailEl) emailEl.textContent = user.email || "-";
-    if (nameEl) nameEl.textContent = "-";
-    if (phoneEl) phoneEl.textContent = "-";
-    return;
-  }
-
-  if (emailEl) {
-    emailEl.textContent = data.email || user.email || "-";
-  }
-
-  if (nameEl) {
-    nameEl.textContent = data.name || "-";
-  }
-
-  if (phoneEl) {
-    phoneEl.textContent = data.phone || "-";
-  }
-}
-
-async function loadAvailableSubjects() {
-  if (!supabaseClient) return;
-
-  const user = await checkUser();
-  if (!user) return;
-
-  const { data, error } = await supabaseClient
-    .from("profiles")
-    .select("available_subjects")
-    .eq("id", user.id)
-    .single();
-
-  if (error) {
-    console.error("Пәндерді оқу қатесі:", error.message);
-    return;
-  }
-
-  const availableSubjects = data?.available_subjects || [];
-  console.log("USER SUBJECTS:", availableSubjects);
-
-  const subjectCards = document.querySelectorAll(".card[data-subject]");
-  console.log("FOUND CARDS:", subjectCards.length);
-
-  subjectCards.forEach((card) => {
-    const subjectName = card.dataset.subject;
-    console.log("CARD SUBJECT:", subjectName);
-
-    if (!availableSubjects.includes(subjectName)) {
-      card.style.display = "none";
+    if (userName) {
+      userName.textContent = fullName;
     }
-  });
-}
-
-document.addEventListener("DOMContentLoaded", async () => {
-  const logoutBtn = document.querySelector(".logout");
-  if (logoutBtn) {
-    logoutBtn.addEventListener("click", logoutUser);
   }
 
-  await loadUserData();
-
-  const isSubjectsPage =
-    window.location.pathname.includes("subjects.html") ||
-    window.location.pathname.endsWith("/subjects") ||
-    document.querySelector(".card[data-subject]");
-
-  if (isSubjectsPage) {
-    await loadAvailableSubjects();
+  if (logoutBtn && supabaseClient) {
+    logoutBtn.addEventListener("click", async () => {
+      await supabaseClient.auth.signOut();
+      window.location.href = "../index.html";
+    });
   }
 });

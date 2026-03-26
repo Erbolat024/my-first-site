@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Контент</title>
+  <link rel="stylesheet" href="admin.css" />
+  <link rel="stylesheet" href="sections.css" />
+</head>
+<body>
+
+  <div class="layout">
+    <aside class="sidebar" id="sidebar">
+      <h2 class="logo">Admin</h2>
+      <ul id="menu"></ul>
+    </aside>
+
+    <main class="main">
+      <h1>Пән бөлімдері мен сабақтар</h1>
+
+      <div class="form-box top-controls">
+        <div class="control-group">
+          <label for="subjectSelect">Пән</label>
+          <select id="subjectSelect">
+            <option value="biology">Биология</option>
+            <option value="chemistry">Химия</option>
+            <option value="english">Ағылшын</option>
+            <option value="reading">Оқу сауаттылығы</option>
+            <option value="math">Математикалық сауаттылық</option>
+          </select>
+        </div>
+
+        <div class="control-group add-section-group">
+          <label for="newSectionTitle">Жаңа бөлім атауы</label>
+          <div class="inline-form">
+            <input
+              type="text"
+              id="newSectionTitle"
+              placeholder="Мысалы: Жасуша биологиясы"
+            />
+            <button id="addSectionBtn">+ Бөлім қосу</button>
+          </div>
+        </div>
+      </div>
+
+      <h2>Бөлімдер тізімі</h2>
+      <div id="sectionsContainer" class="sections-list"></div>
+    </main>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="admin-layout.js"></script>
+  <script src="sections.js"></script>
+</body>
+</html>

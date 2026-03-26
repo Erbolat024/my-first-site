@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Нәтижелер</title>
+
+  <link rel="stylesheet" href="results.css" />
+</head>
+<body>
+  <div class="container">
+    <aside class="sidebar" id="sidebar">
+      <h2 class="logo">MAGISTER</h2>
+
+      <ul class="menu">
+        <li><a href="index.html">🏠 Кабинет</a></li>
+        <li><a href="profile.html">👤 Профиль</a></li>
+        <li><a href="subjects.html">📚 Пәндер</a></li>
+        <li><a href="results.html" class="active">📊 Нәтижелер</a></li>
+      </ul>
+    </aside>
+
+    <main class="main">
+      <div class="header">
+        <div class="page-title-box">
+          <button class="menu-toggle" id="menu-toggle" type="button">☰</button>
+          <div>
+            <h1>Нәтижелер</h1>
+            <p class="subjects-subtitle">Сенің тест нәтижелерің мен пәндер бойынша үлгерімің</p>
+          </div>
+        </div>
+
+        <button class="logout" id="logout-btn" type="button">
+          Шығу
+        </button>
+      </div>
+
+      <!-- Жалпы summary -->
+      <section class="results-summary-section" id="results-summary-section">
+        <div class="summary-card">
+          <span class="summary-label">Пән саны</span>
+          <strong id="summary-subject-count">0</strong>
+        </div>
+
+        <div class="summary-card">
+          <span class="summary-label">Тапсырылған тесттер</span>
+          <strong id="summary-test-count">0</strong>
+        </div>
+
+        <div class="summary-card">
+          <span class="summary-label">Жалпы орташа</span>
+          <strong id="summary-average">0%</strong>
+        </div>
+
+        <div class="summary-card">
+          <span class="summary-label">Соңғы нәтиже</span>
+          <strong id="summary-last-result">—</strong>
+        </div>
+      </section>
+
+      <!-- Хабарлама -->
+      <div class="results-message" id="results-message">
+        Нәтижелер жүктелуде...
+      </div>
+
+      <!-- Пәндер бойынша карточкалар -->
+      <section class="results-grid" id="results-grid">
+        <div class="results-empty">
+          Нәтижелер жүктелуде...
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="results.js"></script>
+</body>
+</html>

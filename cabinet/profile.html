@@ -1,53 +1,45 @@
 <!DOCTYPE html>
 <html lang="kk">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Профиль</title>
-  <link rel="stylesheet" href="cabinet.css">
+  <link rel="stylesheet" href="cabinet.css" />
 </head>
 <body>
+  <div class="container">
+    <aside class="sidebar" id="sidebar">
+      <h2 class="logo">MAGISTER</h2>
 
-<div class="container">
+      <ul class="menu">
+        <li><a href="index.html">🏠 Кабинет</a></li>
+        <li><a href="profile.html">👤 Профиль</a></li>
+        <li><a href="subjects.html">📚 Пәндер</a></li>
+      </ul>
+    </aside>
 
-  <!-- SIDEBAR -->
-  <aside class="sidebar">
-    <h2 class="logo">MAGISTER</h2>
+    <main class="main">
+      <div class="header">
+        <div class="page-title-box">
+          <button class="menu-toggle" id="menu-toggle" type="button">☰</button>
+          <h1>Профиль</h1>
+        </div>
 
-    <ul class="menu">
-      <li><a href="index.html">🏠 Кабинет</a></li>
-      <li><a href="profile.html">👤 Профиль</a></li>
-      <li><a href="subjects.html">📚 Пәндер</a></li>
-      <li><a href="tasks.html">📝 Тапсырмалар</a></li>
-    </ul>
-  </aside>
+        <button class="logout" id="logout-btn" type="button">Шығу</button>
+      </div>
 
-  <!-- MAIN -->
-  <main class="main">
+      <div class="card profile-card">
+        <h3>Жеке мәліметтер</h3>
 
-    <div class="header">
-      <h1>Профиль</h1>
-      <button class="logout">Шығу</button>
-    </div>
+        <p><strong>Аты:</strong> <span id="user-name">...</span></p>
+        <p><strong>Email:</strong> <span id="user-email">...</span></p>
+        <p><strong>Телефон:</strong> <span id="user-phone">...</span></p>
+        <p><strong>Пән:</strong> <span id="user-subject">...</span></p>
+      </div>
+    </main>
+  </div>
 
-    <!-- PROFILE CARD -->
-   <div class="card">
-  <h3>Жеке мәліметтер</h3>
-
-  <p><strong>Аты:</strong> <span id="user-name">...</span></p>
-  <p><strong>Email:</strong> <span id="user-email">...</span></p>
-  <p><strong>Телефон:</strong> <span id="user-phone">...</span></p>
-  <p><strong>Пән:</strong> <span id="user-subject">Биология</span></p>
-
-  <br>
-
-  <button class="edit-btn" onclick="toggleEdit()">Өңдеу</button>
-</div>
-
-  </main>
-
-</div>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="cabinet.js"></script>
-
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="profile.js"></script>
 </body>
 </html>

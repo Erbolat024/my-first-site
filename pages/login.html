@@ -7,20 +7,22 @@
   <link rel="stylesheet" href="../css/common.css">
   <link rel="stylesheet" href="../css/login.css">
 </head>
-
 <body class="form-page">
 
   <div class="form-box">
-
     <img src="../images/logo.jpg" class="logo" alt="Logo">
 
     <h2>Авторизация</h2>
     <p>Аккаунтыңызға кіріңіз</p>
 
-    <input type="email" id="email" placeholder="Эл. почта">
-    <input type="password" id="password" placeholder="Пароль">
+    <form id="login-form">
+      <input type="email" id="email" placeholder="Эл. почта" required>
+      <input type="password" id="password" placeholder="Пароль" required>
 
-    <button class="btn" onclick="loginUser()">Кіру</button>
+      <button type="submit" class="btn">Кіру</button>
+    </form>
+
+    <div id="message" class="form-message"></div>
 
     <div class="form-link">
       Аккаунт жоқ па? <a href="register.html">Тіркелу</a>
@@ -29,11 +31,9 @@
     <div class="form-link">
       <a href="reset.html">Құпия сөзді қалпына келтіру</a>
     </div>
-
   </div>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="../js/script.js"></script>
-
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../js/login.js"></script>
 </body>
 </html>

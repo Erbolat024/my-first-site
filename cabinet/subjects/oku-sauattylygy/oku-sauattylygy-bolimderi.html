@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Оқу сауаттылығы бөлімдері</title>
+  <link rel="stylesheet" href="css/oku-sauattylygy-bolimderi.css" />
+</head>
+<body>
+  <div class="container">
+    <aside class="sidebar" id="sidebar">
+      <h2 class="logo">MAGISTER</h2>
+
+      <ul class="menu">
+        <li><a href="../../index.html">🏠 Кабинет</a></li>
+        <li><a href="../../profile.html">👤 Профиль</a></li>
+        <li><a href="../../subjects.html">📚 Пәндер</a></li>
+      </ul>
+    </aside>
+
+    <main class="main">
+      <div class="header">
+        <div class="page-title-box">
+          <button class="menu-toggle" id="menu-toggle" type="button">☰</button>
+          <div>
+            <a href="../../subjects.html" class="back-link">← Пәндерге қайту</a>
+            <h1>Оқу сауаттылығы бөлімдері</h1>
+            <p class="subjects-subtitle">Оқу сауаттылығы пәні бойынша бөлімдер тізімі</p>
+          </div>
+        </div>
+
+        <button class="logout" type="button" onclick="window.location.href='../../index.html'">
+          Шығу
+        </button>
+      </div>
+
+      <div class="cards reading-sections" id="sections-container"></div>
+    </main>
+  </div>
+
+  <script>
+    const sidebar = document.getElementById("sidebar");
+    const menuToggle = document.getElementById("menu-toggle");
+
+    if (menuToggle && sidebar) {
+      menuToggle.addEventListener("click", () => {
+        sidebar.classList.toggle("hidden");
+      });
+    }
+
+    async function loadSections() {
+      try {
+        const response = await fetch("data/sections.json");
+
+        if (!response.ok) {
+          throw new Error(`sections.json табылмады: ${response.status}`);
+        }
+
+        const sections = await response.json();
+        const container = document.getElementById("sections-container");
+
+        if (!container) return;
+
+        container.innerHTML = "";
+
+        sections.forEach((section) => {
+          const card = document.createElement("div");
+          card.className = "card subject-card";
+
+          card.innerHTML = `
+            <h3>📖 ${section.title}</h3>
+            <p>${section.description}</p>
+            <a href="pages/lesson-list.html?section=${section.id}" class="open-btn">Ашу</a>
+          `;
+
+          container.appendChild(card);
+        });
+      } catch (error) {
+        console.error("Бөлімдерді жүктеу қатесі:", error);
+
+        const container = document.getElementById("sections-container");
+        if (container) {
+          container.innerHTML = `
+            <div class="card subject-card">
+              <h3>Қате</h3>
+              <p>Бөлімдер жүктелмеді. sections.json файлын тексер.</p>
+            </div>
+          `;
+        }
+      }
+    }
+
+    loadSections();
+  </script>
+</body>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Топқа студент қосу</title>
+
+  <link rel="stylesheet" href="admin.css" />
+  <link rel="stylesheet" href="group-students.css" />
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar" id="sidebar">
+      <h2 class="logo">Admin</h2>
+      <ul id="menu"></ul>
+    </aside>
+
+    <main class="main">
+      <h1>Топқа студент қосу</h1>
+
+      <div class="form-box">
+        <label for="groupSearch">Топ</label>
+        <input
+          type="text"
+          id="groupSearch"
+          list="groupsListData"
+          placeholder="Топ іздеу..."
+          autocomplete="off"
+        />
+        <datalist id="groupsListData"></datalist>
+
+        <label for="studentSearch">Студент</label>
+        <input
+          type="text"
+          id="studentSearch"
+          list="studentsListData"
+          placeholder="Студент іздеу..."
+          autocomplete="off"
+        />
+        <datalist id="studentsListData"></datalist>
+
+        <button id="assignBtn">Топқа қосу</button>
+      </div>
+
+      <h2>Топтағы студенттер</h2>
+      <div id="studentsList">Топ таңдаңыз</div>
+    </main>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="admin-layout.js"></script>
+  <script src="group-students.js"></script>
+</body>
+</html>

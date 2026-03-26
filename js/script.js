@@ -184,7 +184,7 @@ window.loginUser = async function () {
     return;
   }
 
-  const { error } = await supabaseClient.auth.signInWithPassword({
+  const { data, error } = await supabaseClient.auth.signInWithPassword({
     email: email,
     password: password
   });
@@ -194,8 +194,31 @@ window.loginUser = async function () {
     return;
   }
 
+  const user = data.user;
+
+  if (!user) {
+    alert("Қолданушы табылмады");
+    return;
+  }
+
+  const { data: profile, error: profileError } = await supabaseClient
+    .from("profiles")
+    .select("role")
+    .eq("id", user.id)
+    .single();
+
+  if (profileError || !profile) {
+    alert("Профиль табылмады: " + (profileError?.message || ""));
+    return;
+  }
+
   alert("Кіру сәтті өтті!");
-  window.location.href = "../cabinet/index.html";
+
+  if (profile.role === "admin") {
+    window.location.href = "../cabinet/admin/admin.html";
+  } else {
+    window.location.href = "../cabinet/profile.html";
+  }
 };
 
 /* ---------------- RESET PASSWORD ---------------- */
@@ -249,6 +272,7 @@ window.logoutUser = async function () {
 
   window.location.href = "../pages/login.html";
 };
+
 /* ---------------- UPDATE PASSWORD ---------------- */
 
 window.updatePassword = async function () {

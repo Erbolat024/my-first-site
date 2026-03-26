@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Аккаунттар</title>
+  <link rel="stylesheet" href="admin.css" />
+</head>
+<body>
+
+<div class="layout">
+  <aside class="sidebar" id="sidebar">
+    <h2 class="logo">Admin</h2>
+    <ul id="menu"></ul>
+  </aside>
+
+  <main class="main">
+    <h1>Аккаунттар</h1>
+
+    <div class="users-topbar">
+      <input
+        type="text"
+        id="search-input"
+        placeholder="Іздеу (аты, email...)"
+        class="search"
+      />
+    </div>
+
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Аты</th>
+          <th>Email</th>
+          <th>Role</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody id="users-table"></tbody>
+    </table>
+  </main>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+<script src="admin-layout.js"></script>
+<script src="users.js"></script>
+
+</body>
+</html>
