@@ -30,7 +30,7 @@ async function initLayout() {
   if (logoutBtn) {
     logoutBtn.addEventListener("click", async () => {
       await supabaseClient.auth.signOut();
-      window.location.href = "/pages/login.html";
+      window.location.href = "../../../pages/login.html";
     });
   }
 
