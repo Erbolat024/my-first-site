@@ -39,30 +39,9 @@
         </div>
 
         <div id="subjects-box" class="subjects-box hidden">
-          <label class="subject-check">
-            <input type="checkbox" value="Биология" />
-            <span>Биология</span>
-          </label>
-
-          <label class="subject-check">
-            <input type="checkbox" value="Химия" />
-            <span>Химия</span>
-          </label>
-
-          <label class="subject-check">
-            <input type="checkbox" value="Ағылшын" />
-            <span>Ағылшын</span>
-          </label>
-
-          <label class="subject-check">
-            <input type="checkbox" value="Оқу сауаттылығы" />
-            <span>Оқу сауаттылығы</span>
-          </label>
-
-          <label class="subject-check">
-            <input type="checkbox" value="Математикалық сауаттылық" />
-            <span>Математикалық сауаттылық</span>
-          </label>
+          <div id="subjects-list" class="subjects-list">
+            <div class="subject-check">Пәндер жүктелуде...</div>
+          </div>
 
           <button id="save-access-btn" class="primary-btn" type="button">
             Сақтау
@@ -74,6 +53,7 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+<script src="supabase-config.js"></script>
 <script src="admin-layout.js"></script>
 <script src="access.js"></script>
 

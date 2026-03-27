@@ -8,7 +8,6 @@
   <link rel="stylesheet" href="sections.css" />
 </head>
 <body>
-
   <div class="layout">
     <aside class="sidebar" id="sidebar">
       <h2 class="logo">Admin</h2>
@@ -16,18 +15,24 @@
     </aside>
 
     <main class="main">
-      <h1>Пән бөлімдері мен сабақтар</h1>
+      <div class="page-header">
+        <h1 id="page-title">Пән бөлімдері мен сабақтар</h1>
+        <p id="page-subtitle">Таңдалған пәннің бөлімдерін басқару</p>
+      </div>
 
       <div class="form-box top-controls">
         <div class="control-group">
-          <label for="subjectSelect">Пән</label>
+          <label for="subjectSelect">Пәнді таңдау</label>
           <select id="subjectSelect">
-            <option value="biology">Биология</option>
-            <option value="chemistry">Химия</option>
-            <option value="english">Ағылшын</option>
-            <option value="reading">Оқу сауаттылығы</option>
-            <option value="math">Математикалық сауаттылық</option>
+            <option value="">Пәнді таңдаңыз</option>
           </select>
+        </div>
+
+        <div class="control-group current-subject-group">
+          <label>Таңдалған пән</label>
+          <div id="currentSubjectBadge" class="current-subject-badge">
+            Таңдалмаған
+          </div>
         </div>
 
         <div class="control-group add-section-group">
@@ -38,17 +43,20 @@
               id="newSectionTitle"
               placeholder="Мысалы: Жасуша биологиясы"
             />
-            <button id="addSectionBtn">+ Бөлім қосу</button>
+            <button id="addSectionBtn" type="button">+ Бөлім қосу</button>
           </div>
         </div>
       </div>
 
       <h2>Бөлімдер тізімі</h2>
-      <div id="sectionsContainer" class="sections-list"></div>
+      <div id="sectionsContainer" class="sections-list">
+        <p>Пәнді таңдаңыз</p>
+      </div>
     </main>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js"></script>
   <script src="admin-layout.js"></script>
   <script src="sections.js"></script>
 </body>

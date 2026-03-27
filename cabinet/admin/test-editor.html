@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Тест редакторы</title>
+  <link rel="stylesheet" href="admin.css" />
+  <link rel="stylesheet" href="test-editor.css" />
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar" id="sidebar">
+      <h2 class="logo">Admin</h2>
+      <ul id="menu"></ul>
+    </aside>
+
+    <main class="main">
+      <div class="page-header">
+        <h1 id="page-title">Тест редакторы</h1>
+        <p id="page-subtitle">Сабаққа тест сұрақтарын қосу және басқару</p>
+      </div>
+
+      <div class="info-grid">
+        <div class="info-box">
+          <label>Пән</label>
+          <div id="subjectBadge" class="info-badge">Жүктелуде...</div>
+        </div>
+
+        <div class="info-box">
+          <label>Бөлім</label>
+          <div id="sectionBadge" class="info-badge">Жүктелуде...</div>
+        </div>
+
+        <div class="info-box">
+          <label>Сабақ</label>
+          <div id="lessonBadge" class="info-badge">Жүктелуде...</div>
+        </div>
+      </div>
+
+      <div class="form-box">
+        <h2>Тест сұрағын қосу</h2>
+
+        <div class="form-group">
+          <label for="questionInput">Сұрақ</label>
+          <textarea
+            id="questionInput"
+            rows="3"
+            placeholder="Сұрақ мәтінін жазыңыз"
+          ></textarea>
+        </div>
+
+        <div class="options-grid">
+          <div class="form-group">
+            <label for="optionA">A нұсқасы</label>
+            <input id="optionA" type="text" placeholder="A нұсқасы" />
+          </div>
+
+          <div class="form-group">
+            <label for="optionB">B нұсқасы</label>
+            <input id="optionB" type="text" placeholder="B нұсқасы" />
+          </div>
+
+          <div class="form-group">
+            <label for="optionC">C нұсқасы</label>
+            <input id="optionC" type="text" placeholder="C нұсқасы" />
+          </div>
+
+          <div class="form-group">
+            <label for="optionD">D нұсқасы</label>
+            <input id="optionD" type="text" placeholder="D нұсқасы" />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="correctAnswer">Дұрыс жауап</label>
+          <select id="correctAnswer">
+            <option value="">Дұрыс жауапты таңдаңыз</option>
+            <option value="A">A</option>
+            <option value="B">B</option>
+            <option value="C">C</option>
+            <option value="D">D</option>
+          </select>
+        </div>
+
+        <div class="actions-row">
+          <button id="saveTestBtn" type="button" class="btn-save">
+            + Сұрақ қосу
+          </button>
+
+          <button id="cancelEditBtn" type="button" class="btn-cancel">
+            Болдырмау
+          </button>
+
+          <a id="backToLessonBtn" class="btn-back" href="#">
+            ← Сабаққа қайту
+          </a>
+        </div>
+      </div>
+
+      <div class="tests-header">
+        <h2>Тест сұрақтары</h2>
+      </div>
+
+      <div id="testsContainer" class="tests-list">
+        <p>Жүктелуде...</p>
+      </div>
+    </main>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js"></script>
+  <script src="admin-layout.js"></script>
+  <script src="test-editor.js"></script>
+</body>
+</html>

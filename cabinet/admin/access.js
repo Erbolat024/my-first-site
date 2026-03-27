@@ -1,14 +1,7 @@
 let allStudents = [];
+let allSubjects = [];
 let selectedStudentId = null;
 let selectedStudentName = "";
-
-const SUBJECTS = [
-  "Биология",
-  "Химия",
-  "Ағылшын",
-  "Оқу сауаттылығы",
-  "Математикалық сауаттылық"
-];
 
 async function loadStudents() {
   const list = document.getElementById("students-list");
@@ -57,6 +50,54 @@ function renderStudents(students) {
     .join("");
 }
 
+async function loadSubjects() {
+  const subjectsList = document.getElementById("subjects-list");
+  if (!subjectsList) return;
+
+  subjectsList.innerHTML = `<div class="subject-check">Жүктелуде...</div>`;
+
+  const { data, error } = await supabaseClient
+    .from("subjects")
+    .select("id, name, slug")
+    .eq("is_active", true)
+    .order("name", { ascending: true });
+
+  if (error) {
+    console.error("Subjects loading error:", error);
+    subjectsList.innerHTML = `<div class="subject-check">Пәндерді жүктеу кезінде қате шықты</div>`;
+    return;
+  }
+
+  allSubjects = data || [];
+  renderSubjects(allSubjects);
+}
+
+function renderSubjects(subjects) {
+  const subjectsList = document.getElementById("subjects-list");
+  if (!subjectsList) return;
+
+  if (!subjects.length) {
+    subjectsList.innerHTML = `<div class="subject-check">Пәндер табылмады</div>`;
+    return;
+  }
+
+  subjectsList.innerHTML = subjects
+    .map(
+      (subject) => `
+        <label class="subject-check">
+          <input
+            type="checkbox"
+            value="${escapeHtml(subject.slug || "")}"
+            data-subject-name="${escapeHtml(subject.name || "")}"
+            data-subject-slug="${escapeHtml(subject.slug || "")}"
+          />
+          <span>${escapeHtml(subject.name || "-")}</span>
+        </label>
+      `
+    )
+    .join("");
+}
+
 async function selectStudent(studentId, studentName, studentEmail) {
   selectedStudentId = studentId;
   selectedStudentName = studentName;
@@ -84,7 +125,7 @@ async function selectStudent(studentId, studentName, studentEmail) {
 async function loadStudentSubjects(studentId) {
   const { data, error } = await supabaseClient
     .from("subject_access")
-    .select("subject_name")
+    .select("subject_name, slug")
     .eq("user_id", studentId);
 
   if (error) {
@@ -92,11 +133,21 @@ async function loadStudentSubjects(studentId) {
     return;
   }
 
-  const grantedSubjects = (data || []).map((item) => item.subject_name);
+  const grantedSlugs = (data || [])
+    .map((item) => item.slug)
+    .filter(Boolean);
 
-  const checkboxes = document.querySelectorAll('#subjects-box input[type="checkbox"]');
+  const grantedNames = (data || [])
+    .map((item) => item.subject_name)
+    .filter(Boolean);
+
+  const checkboxes = document.querySelectorAll('#subjects-list input[type="checkbox"]');
   checkboxes.forEach((checkbox) => {
-    checkbox.checked = grantedSubjects.includes(checkbox.value);
+    const slug = checkbox.value;
+    const name = checkbox.dataset.subjectName || "";
+
+    checkbox.checked =
+      grantedSlugs.includes(slug) || grantedNames.includes(name);
   });
 }
 
@@ -107,8 +158,18 @@ async function saveAccess() {
   }
 
   const checkedSubjects = Array.from(
-    document.querySelectorAll('#subjects-box input[type="checkbox"]:checked')
-  ).map((checkbox) => checkbox.value);
+    document.querySelectorAll('#subjects-list input[type="checkbox"]:checked')
+  ).map((checkbox) => ({
+    user_id: selectedStudentId,
+    subject_name: checkbox.dataset.subjectName,
+    slug: checkbox.value
+  }));
+
+  const saveBtn = document.getElementById("save-access-btn");
+  if (saveBtn) {
+    saveBtn.disabled = true;
+    saveBtn.textContent = "Сақталуда...";
+  }
 
   const { error: deleteError } = await supabaseClient
     .from("subject_access")
@@ -117,25 +178,33 @@ async function saveAccess() {
 
   if (deleteError) {
     console.error("Delete access error:", deleteError);
-    alert("Ескі доступты өшіру кезінде қате шықты");
+    alert(`Ескі доступты өшіру кезінде қате шықты:\n${deleteError.message}`);
+    if (saveBtn) {
+      saveBtn.disabled = false;
+      saveBtn.textContent = "Сақтау";
+    }
     return;
   }
 
   if (checkedSubjects.length > 0) {
-    const rowsToInsert = checkedSubjects.map((subject) => ({
-      user_id: selectedStudentId,
-      subject_name: subject
-    }));
-
     const { error: insertError } = await supabaseClient
       .from("subject_access")
-      .insert(rowsToInsert);
+      .insert(checkedSubjects);
 
     if (insertError) {
       console.error("Insert access error:", insertError);
-      alert("Жаңа доступты сақтау кезінде қате шықты");
+      alert(`Жаңа доступты сақтау кезінде қате шықты:\n${insertError.message}`);
+      if (saveBtn) {
+        saveBtn.disabled = false;
+        saveBtn.textContent = "Сақтау";
+      }
       return;
     }
+  }
+
+  if (saveBtn) {
+    saveBtn.disabled = false;
+    saveBtn.textContent = "Сақтау";
   }
 
   alert(`Пән доступы сақталды ✅\n${selectedStudentName}`);
@@ -174,8 +243,11 @@ function escapeHtml(text) {
     .replaceAll("'", "&#039;");
 }
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
   setupStudentSearch();
   setupSaveButton();
-  loadStudents();
+  await loadStudents();
+  await loadSubjects();
 });
+
+window.selectStudent = selectStudent;

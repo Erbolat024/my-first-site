@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Пәндер</title>
+  <link rel="stylesheet" href="css/layout.css" />
+  <link rel="stylesheet" href="css/subjects.css" />
+</head>
+<body>
+
+  <div class="container">
+    <aside class="sidebar" id="sidebar">
+      <h2 class="logo">MAGISTER</h2>
+
+      <ul class="menu">
+        <li><a href="index.html">🏠 Кабинет</a></li>
+        <li><a href="profile.html">👤 Профиль</a></li>
+        <li><a href="subjects.html" class="active">📚 Пәндер</a></li>
+        <li><a href="results.html">📊 Нәтижелер</a></li>
+      </ul>
+    </aside>
+
+    <main class="main">
+      <div class="header">
+        <div class="welcome-box">
+          <button class="menu-toggle" id="menu-toggle" type="button">☰</button>
+          <div>
+            <h1>Менің пәндерім</h1>
+            <p>Сізге ашылған пәндер тізімі</p>
+          </div>
+        </div>
+
+        <button class="logout" id="logout-btn" type="button">Шығу</button>
+      </div>
+
+      <div id="subjects-grid" class="subjects-grid">
+        <div class="empty-box">Пәндер жүктелуде...</div>
+      </div>
+    </main>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase-config.js"></script>
+  <script src="js/layout.js"></script>
+  <script src="js/subjects.js"></script>
+
+</body>
+</html>

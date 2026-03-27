@@ -1,0 +1,154 @@
+.results-summary {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 18px;
+  margin-top: 24px;
+  margin-bottom: 24px;
+}
+
+.summary-card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 22px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+}
+
+.summary-card h3 {
+  margin: 0 0 10px;
+  font-size: 16px;
+  color: #6b7280;
+}
+
+.summary-card p {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 800;
+  color: #111827;
+}
+
+.results-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.subject-results-block {
+  background: #fff;
+  border-radius: 18px;
+  padding: 22px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+}
+
+.subject-results-header {
+  margin-bottom: 18px;
+}
+
+.subject-results-header h2 {
+  margin: 0 0 8px;
+  font-size: 24px;
+}
+
+.subject-results-header p {
+  margin: 0;
+  color: #6b7280;
+  font-size: 15px;
+}
+
+.subject-lessons-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.lesson-list-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  background: #f8fafc;
+  border-radius: 14px;
+  padding: 16px 18px;
+}
+
+.lesson-list-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.lesson-number {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: #e5e7eb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+}
+
+.lesson-info h3 {
+  margin: 0 0 6px;
+  font-size: 18px;
+}
+
+.lesson-info p {
+  margin: 0 0 8px;
+  color: #6b7280;
+  font-size: 14px;
+}
+
+.lesson-result {
+  display: inline-block;
+  padding: 8px 14px;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.result-danger {
+  background: #fef2f2;
+  color: #dc2626;
+}
+
+.result-warning {
+  background: #fff7ed;
+  color: #ea580c;
+}
+
+.result-info {
+  background: #eff6ff;
+  color: #2563eb;
+}
+
+.result-success {
+  background: #ecfdf5;
+  color: #16a34a;
+}
+
+.result-not-started {
+  background: #f3f4f6;
+  color: #6b7280;
+}
+
+.open-btn.secondary {
+  display: inline-block;
+  text-decoration: none;
+  background: #4f7df3;
+  color: #fff;
+  padding: 10px 16px;
+  border-radius: 10px;
+  font-weight: 700;
+}
+
+.results-empty {
+  background: #fff;
+  border-radius: 16px;
+  padding: 24px;
+  color: #6b7280;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+}
+
+.hidden {
+  display: none;
+}

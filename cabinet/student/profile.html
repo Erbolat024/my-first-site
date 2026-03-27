@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Профиль</title>
+  <link rel="stylesheet" href="css/layout.css" />
+  <link rel="stylesheet" href="css/profile.css" />
+</head>
+<body>
+
+  <div class="container">
+    <aside class="sidebar" id="sidebar">
+      <h2 class="logo">MAGISTER</h2>
+
+      <ul class="menu">
+        <li><a href="index.html">🏠 Кабинет</a></li>
+        <li><a href="profile.html" class="active">👤 Профиль</a></li>
+        <li><a href="subjects.html">📚 Пәндер</a></li>
+        <li><a href="results.html">📊 Нәтижелер</a></li>
+      </ul>
+    </aside>
+
+    <main class="main">
+      <div class="header">
+        <div class="welcome-box">
+          <button class="menu-toggle" id="menu-toggle" type="button">☰</button>
+          <div>
+            <h1>Менің профилім</h1>
+            <p>Тіркелу кезінде енгізілген жеке мәліметтер</p>
+          </div>
+        </div>
+
+        <button class="logout" id="logout-btn" type="button">Шығу</button>
+      </div>
+
+      <div class="profile-wrapper">
+        <div class="profile-card">
+          <div class="profile-top">
+            <div class="profile-avatar" id="profile-avatar">U</div>
+            <div>
+              <h2 id="profile-name">Қолданушы</h2>
+              <p id="profile-role">Оқушы</p>
+            </div>
+          </div>
+
+          <div class="profile-info-list">
+            <div class="profile-info-item">
+              <span class="label">Аты-жөні</span>
+              <span class="value" id="info-name">—</span>
+            </div>
+
+            <div class="profile-info-item">
+              <span class="label">ID</span>
+              <span class="value" id="info-id">—</span>
+            </div>
+            
+            <div class="profile-info-item">
+              <span class="label">Email</span>
+              <span class="value" id="info-email">—</span>
+            </div>
+
+            <div class="profile-info-item">
+              <span class="label">Телефон</span>
+              <span class="value" id="info-phone">—</span>
+            </div>
+
+            <div class="profile-info-item">
+              <span class="label">Рөлі</span>
+              <span class="value" id="info-role">—</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase-config.js"></script>
+  <script src="js/layout.js"></script>
+  <script src="js/profile.js"></script>
+
+</body>
+</html>

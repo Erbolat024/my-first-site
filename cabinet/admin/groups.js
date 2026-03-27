@@ -1,4 +1,4 @@
-const supabaseClient = window.supabaseClient;
+
 
 async function loadCurators() {
   const select = document.getElementById("curatorSelect");

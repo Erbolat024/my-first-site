@@ -157,7 +157,7 @@ window.verifyCode = async function () {
   localStorage.removeItem("pending_phone");
 
   alert("Аккаунт расталды!");
-  window.location.href = "../cabinet/index.html";
+  window.location.href = "../cabinet/student/index.html";
 };
 
 /* ---------------- LOGIN ---------------- */
@@ -214,11 +214,11 @@ window.loginUser = async function () {
 
   alert("Кіру сәтті өтті!");
 
-  if (profile.role === "admin") {
-    window.location.href = "../cabinet/admin/admin.html";
-  } else {
-    window.location.href = "../cabinet/profile.html";
-  }
+ if (profile.role === "admin") {
+  window.location.href = "../cabinet/admin/dashboard.html";
+} else {
+  window.location.href = "../cabinet/student/index.html";
+}
 };
 
 /* ---------------- RESET PASSWORD ---------------- */

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Сабақ редакторы</title>
+  <title>Сабақтар</title>
   <link rel="stylesheet" href="admin.css" />
   <link rel="stylesheet" href="lesson-editor.css" />
 </head>
@@ -11,74 +11,63 @@
   <div class="layout">
     <aside class="sidebar" id="sidebar">
       <h2 class="logo">Admin</h2>
-      <ul class="menu">
-        <li><a href="dashboard.html">Dashboard</a></li>
-        <li><a href="users.html">Аккаунттар</a></li>
-        <li><a href="access.html">Доступ</a></li>
-        <li><a href="groups.html">Топтар</a></li>
-        <li><a href="results.html" class="active">Нәтижелер</a></li>
-        <li><a href="sections.html">Контент</a></li>
-        <li><a href="../../index.html">Шығу</a></li>
-      </ul>
+      <ul id="menu"></ul>
     </aside>
 
     <main class="main">
       <div class="page-header">
-        <div>
-          <h1>Сабақ редакторы</h1>
-          <p id="lessonMeta">Жүктелуде...</p>
+        <h1 id="page-title">Сабақтар</h1>
+        <p id="page-subtitle">Пән мен бөлімді таңдап, сабақтарды басқарыңыз</p>
+      </div>
+
+      <div class="form-box top-controls">
+        <div class="control-group">
+          <label for="subjectSelect">Пәнді таңдау</label>
+          <select id="subjectSelect">
+            <option value="">Пәнді таңдаңыз</option>
+          </select>
         </div>
 
-        <div class="top-actions">
-          <a href="sections.html" class="btn secondary">← Артқа</a>
-          <button id="saveLessonBtn" class="btn primary">Сақтау</button>
+        <div class="control-group">
+          <label for="sectionSelect">Бөлімді таңдау</label>
+          <select id="sectionSelect">
+            <option value="">Алдымен пәнді таңдаңыз</option>
+          </select>
+        </div>
+
+        <div class="control-group">
+          <label>Пән</label>
+          <div id="currentSubjectBadge" class="info-badge">Таңдалмаған</div>
+        </div>
+
+        <div class="control-group">
+          <label>Бөлім</label>
+          <div id="currentSectionBadge" class="info-badge">Таңдалмаған</div>
+        </div>
+
+        <div class="control-group add-lesson-group">
+          <label for="newLessonTitle">Жаңа сабақ атауы</label>
+          <div class="inline-form">
+            <input
+              type="text"
+              id="newLessonTitle"
+              placeholder="Мысалы: Жасуша теориясы"
+            />
+            <button id="addLessonBtn" type="button">+ Сабақ қосу</button>
+          </div>
         </div>
       </div>
 
-      <div id="editorContent">
-        <section class="card">
-          <h2>Негізгі ақпарат</h2>
-
-          <div class="form-group">
-            <label for="lessonTitle">Сабақ атауы</label>
-            <input type="text" id="lessonTitle" placeholder="Сабақ атауы" />
-          </div>
-
-          <div class="form-group">
-            <label for="lessonDescription">Қысқаша сипаттама</label>
-            <textarea id="lessonDescription" rows="3" placeholder="Сабақтың қысқаша сипаттамасы"></textarea>
-          </div>
-
-          <div class="form-group">
-            <label for="lessonVideo">Видео ссылка</label>
-            <input type="text" id="lessonVideo" placeholder="https://..." />
-          </div>
-        </section>
-
-        <section class="card">
-          <h2>Конспект</h2>
-          <div class="form-group">
-            <label for="lessonContent">Сабақ мәтіні</label>
-            <textarea id="lessonContent" class="big-textarea" rows="14" placeholder="Сабақ конспектін осында жазыңыз"></textarea>
-          </div>
-        </section>
-
-        <section class="card">
-          <div class="test-header">
-            <div>
-              <h2>Тест сұрақтары</h2>
-              <p>Әр сұраққа 4 жауап нұсқасы және дұрыс жауап белгіленеді</p>
-            </div>
-            <button id="addQuestionBtn" class="btn primary">+ Сұрақ қосу</button>
-          </div>
-
-          <div id="questionsContainer" class="questions-container"></div>
-        </section>
+      <h2>Сабақтар тізімі</h2>
+      <div id="lessonsContainer" class="lessons-list">
+        <p>Пән мен бөлімді таңдаңыз</p>
       </div>
     </main>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="lesson-editor.js"></script> 
+  <script src="supabase-config.js"></script>
+  <script src="admin-layout.js"></script>
+  <script src="lesson-editor.js"></script>
 </body>
 </html>

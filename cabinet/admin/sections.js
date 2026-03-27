@@ -1,281 +1,287 @@
+const sb = window.supabaseClient;
 
-
-const subjectSelect = document.getElementById("subjectSelect");
-const newSectionTitleInput = document.getElementById("newSectionTitle");
-const addSectionBtn = document.getElementById("addSectionBtn");
 const sectionsContainer = document.getElementById("sectionsContainer");
+const addBtn = document.getElementById("addSectionBtn");
+const input = document.getElementById("newSectionTitle");
+const subjectSelect = document.getElementById("subjectSelect");
 
-let currentSubject = subjectSelect.value;
-let sectionsData = [];
-let lessonsData = [];
+const pageTitle = document.getElementById("page-title");
+const pageSubtitle = document.getElementById("page-subtitle");
+const subjectBadge = document.getElementById("currentSubjectBadge");
 
-// ===== LOAD =====
-async function loadSections() {
-  sectionsContainer.innerHTML = `<div class="empty-state">Жүктелуде...</div>`;
+let currentSubject = null;
+let editingSectionId = null;
 
-  try {
-    const { data, error } = await supabaseClient
-      .from("sections")
-      .select("*")
-      .eq("subject", currentSubject)
-      .order("id", { ascending: true });
-
-    if (error) throw error;
-
-    sectionsData = data || [];
-    await loadLessons();
-  } catch (error) {
-    console.error("Sections жүктеу қатесі:", error);
-    sectionsContainer.innerHTML = `<div class="empty-state">Бөлімдер жүктелмеді.</div>`;
-  }
+// URL-ден subject алу
+function getSubject() {
+  const params = new URLSearchParams(window.location.search);
+  return params.get("subject");
 }
 
-async function loadLessons() {
-  try {
-    if (!sectionsData.length) {
-      lessonsData = [];
-      renderSections();
-      return;
-    }
+// Пәндер тізімін select-ке жүктеу
+async function loadSubjectsToSelect() {
+  if (!subjectSelect) return;
 
-    const ids = sectionsData.map((s) => s.id);
+  const { data, error } = await sb
+    .from("subjects")
+    .select("*")
+    .eq("is_active", true)
+    .order("name", { ascending: true });
 
-    const { data, error } = await supabaseClient
-      .from("lessons")
-      .select("*")
-      .in("section_id", ids)
-      .order("id", { ascending: true });
-
-    if (error) throw error;
-
-    lessonsData = data || [];
-    renderSections();
-  } catch (error) {
-    console.error("Lessons жүктеу қатесі:", error);
-    sectionsContainer.innerHTML = `<div class="empty-state">Сабақтар жүктелмеді.</div>`;
-  }
-}
-
-// ===== HELPERS =====
-function getLessons(sectionId) {
-  return lessonsData.filter((l) => String(l.section_id) === String(sectionId));
-}
-
-function escapeHtml(text) {
-  return String(text ?? "")
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#039;");
-}
-
-// ===== RENDER =====
-function renderSections() {
-  if (!sectionsContainer) return;
-
-  sectionsContainer.innerHTML = "";
-
-  if (!sectionsData.length) {
-    sectionsContainer.innerHTML = `
-      <div class="empty-state">Бұл пән бойынша бөлімдер әлі жоқ.</div>
-    `;
+  if (error) {
+    console.error("Пәндерді жүктеу қатесі:", error);
     return;
   }
 
-  sectionsData.forEach((section) => {
-    const lessons = getLessons(section.id);
+  subjectSelect.innerHTML = `<option value="">Пәнді таңдаңыз</option>`;
 
-    const div = document.createElement("div");
-    div.className = "section-card";
+  data.forEach((subject) => {
+    const option = document.createElement("option");
+    option.value = subject.slug;
+    option.textContent = subject.name;
+    subjectSelect.appendChild(option);
+  });
 
-    div.innerHTML = `
-      <div class="section-top">
-        <input
-          class="section-title-input"
-          data-id="${section.id}"
-          value="${escapeHtml(section.title)}"
-        />
-        <div class="section-actions">
-          <button type="button" onclick="saveSection(${section.id})">Сақтау</button>
-          <button type="button" onclick="deleteSection(${section.id})">Өшіру</button>
+  const urlSubject = getSubject();
+
+  if (urlSubject) {
+    subjectSelect.value = urlSubject;
+    currentSubject = urlSubject;
+  }
+}
+
+// UI жаңарту
+function updateSubjectUI() {
+  if (!currentSubject) {
+    if (pageTitle) pageTitle.textContent = "Пән бөлімдері мен сабақтар";
+    if (pageSubtitle) pageSubtitle.textContent = "Алдымен пәнді таңдаңыз";
+    if (subjectBadge) subjectBadge.textContent = "Таңдалмаған";
+
+    if (sectionsContainer) {
+      sectionsContainer.innerHTML = `<p>Пәнді таңдаңыз</p>`;
+    }
+
+    return;
+  }
+
+  if (pageTitle) pageTitle.textContent = `${currentSubject} пәнінің бөлімдері`;
+  if (pageSubtitle) pageSubtitle.textContent = `Таңдалған пән: ${currentSubject}`;
+  if (subjectBadge) subjectBadge.textContent = currentSubject;
+}
+
+// Бөлімдерді жүктеу
+async function loadSections() {
+  if (!currentSubject) {
+    updateSubjectUI();
+    return;
+  }
+
+  const { data, error } = await sb
+    .from("sections")
+    .select("*")
+    .eq("subject", currentSubject)
+    .order("created_at", { ascending: true });
+
+  if (error) {
+    console.error("Бөлімдерді жүктеу қатесі:", error);
+    sectionsContainer.innerHTML = `<p>Қате шықты</p>`;
+    return;
+  }
+
+  renderSections(data);
+}
+
+// Бөлімдерді шығару
+function renderSections(sections) {
+  if (!sectionsContainer) return;
+
+  if (!sections || sections.length === 0) {
+    sectionsContainer.innerHTML = "<p>Бұл пәнде әзірге бөлімдер жоқ</p>";
+    return;
+  }
+
+  sectionsContainer.innerHTML = sections
+    .map((section) => {
+      return `
+        <div class="section-card">
+          <h3>${section.title}</h3>
+          <p><strong>ID:</strong> ${section.id}</p>
+
+          <div class="section-actions">
+            <button
+              class="btn-edit-section"
+              type="button"
+              data-edit-id="${section.id}"
+              data-edit-title="${section.title}"
+            >
+              Өңдеу
+            </button>
+
+            <button
+              class="btn-delete-section"
+              type="button"
+              data-delete-id="${section.id}"
+            >
+              Өшіру
+            </button>
+
+            <a
+              class="btn-lessons-section"
+              href="lesson-editor.html?subject=${currentSubject}&section=${section.id}"
+            >
+              Сабақтарына өту
+            </a>
+          </div>
         </div>
-      </div>
+      `;
+    })
+    .join("");
 
-      <div class="add-lesson-row">
-        <input type="text" placeholder="Сабақ атауы" id="lesson-${section.id}" />
-        <button type="button" onclick="addLesson(${section.id})">+ Сабақ</button>
-      </div>
+  bindSectionActions();
+}
 
-      <div class="lessons-list">
-        ${
-          lessons.length
-            ? lessons.map((l) => `
-              <div class="lesson-item">
-                <input value="${escapeHtml(l.title)}" id="lesson-title-${l.id}" />
-                <div class="lesson-actions">
-                  <button type="button" onclick="saveLesson(${l.id})">💾</button>
-                  <button type="button" onclick="openLesson(${section.id}, ${l.id})">✏️</button>
-                  <button type="button" onclick="deleteLesson(${l.id})">❌</button>
-                </div>
-              </div>
-            `).join("")
-            : `<div class="empty-lessons">Бұл бөлімде сабақ жоқ.</div>`
-        }
-      </div>
-    `;
+// Бөлім карточка батырмалары
+function bindSectionActions() {
+  const editButtons = document.querySelectorAll("[data-edit-id]");
+  const deleteButtons = document.querySelectorAll("[data-delete-id]");
 
-    sectionsContainer.appendChild(div);
+  editButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      const id = button.dataset.editId;
+      const title = button.dataset.editTitle;
+
+      editingSectionId = id;
+      input.value = title || "";
+      addBtn.textContent = "Өзгерісті сақтау";
+
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+      });
+    });
+  });
+
+  deleteButtons.forEach((button) => {
+    button.addEventListener("click", async () => {
+      const id = button.dataset.deleteId;
+
+      const confirmed = confirm("Бұл бөлімді өшіргіңіз келе ме?");
+      if (!confirmed) return;
+
+      await deleteSection(id);
+    });
   });
 }
 
-// ===== SECTION =====
-async function addSection() {
-  const title = newSectionTitleInput.value.trim();
-  if (!title) return;
-
-  try {
-    const { error } = await supabaseClient
-      .from("sections")
-      .insert([{ subject: currentSubject, title }]);
-
-    if (error) throw error;
-
-    newSectionTitleInput.value = "";
-    await loadSections();
-  } catch (error) {
-    console.error("Бөлім қосу қатесі:", error);
-    alert("Бөлім қосылмады");
-  }
-}
-
-async function saveSection(id) {
-  const input = document.querySelector(`.section-title-input[data-id="${id}"]`);
-  if (!input) return;
-
-  try {
-    const { error } = await supabaseClient
-      .from("sections")
-      .update({ title: input.value.trim() })
-      .eq("id", id);
-
-    if (error) throw error;
-
-    alert("Сақталды");
-  } catch (error) {
-    console.error("Бөлім сақтау қатесі:", error);
-    alert("Сақталмады");
-  }
-}
-
-async function deleteSection(id) {
-  if (!confirm("Бөлімді өшіру керек пе?")) return;
-
-  try {
-    const { error: lessonsError } = await supabaseClient
-      .from("lessons")
-      .delete()
-      .eq("section_id", id);
-
-    if (lessonsError) throw lessonsError;
-
-    const { error } = await supabaseClient
-      .from("sections")
-      .delete()
-      .eq("id", id);
-
-    if (error) throw error;
-
-    await loadSections();
-  } catch (error) {
-    console.error("Бөлім өшіру қатесі:", error);
-    alert("Өшірілмеді");
-  }
-}
-
-// ===== LESSON =====
-async function addLesson(sectionId) {
-  const input = document.getElementById(`lesson-${sectionId}`);
-  if (!input) return;
-
+// Жаңа бөлім қосу немесе edit сақтау
+async function addOrUpdateSection() {
   const title = input.value.trim();
-  if (!title) return;
 
-  try {
-    const { error } = await supabaseClient
-      .from("lessons")
-      .insert([
-        {
-          section_id: sectionId,
-          subject: currentSubject,
-          title
-        }
-      ]);
+  if (!currentSubject) {
+    alert("Алдымен пәнді таңдаңыз");
+    return;
+  }
 
-    if (error) throw error;
+  if (!title) {
+    alert("Бөлім атауын толтырыңыз");
+    return;
+  }
 
-    input.value = "";
+  if (editingSectionId) {
+    const { error } = await sb
+      .from("sections")
+      .update({ title })
+      .eq("id", editingSectionId);
+
+    if (error) {
+      console.error("Бөлімді жаңарту қатесі:", error);
+      alert("Бөлімді жаңарту кезінде қате шықты");
+      return;
+    }
+
+    resetSectionForm();
     await loadSections();
-  } catch (error) {
-    console.error("Сабақ қосу қатесі:", error);
-    alert("Сабақ қосылмады");
+    return;
   }
-}
 
-async function saveLesson(id) {
-  const input = document.getElementById(`lesson-title-${id}`);
-  if (!input) return;
+  const { error } = await sb.from("sections").insert([
+    {
+      title,
+      subject: currentSubject
+    }
+  ]);
 
-  try {
-    const { error } = await supabaseClient
-      .from("lessons")
-      .update({ title: input.value.trim() })
-      .eq("id", id);
-
-    if (error) throw error;
-
-    alert("Сақталды");
-  } catch (error) {
-    console.error("Сабақ сақтау қатесі:", error);
-    alert("Сақталмады");
+  if (error) {
+    console.error("Бөлім қосу қатесі:", error);
+    alert("Бөлімді қосу кезінде қате шықты");
+    return;
   }
-}
 
-async function deleteLesson(id) {
-  if (!confirm("Сабақты өшіру керек пе?")) return;
-
-  try {
-    const { error } = await supabaseClient
-      .from("lessons")
-      .delete()
-      .eq("id", id);
-
-    if (error) throw error;
-
-    await loadSections();
-  } catch (error) {
-    console.error("Сабақ өшіру қатесі:", error);
-    alert("Өшірілмеді");
-  }
-}
-
-function openLesson(sectionId, lessonId) {
-  window.location.href = `lesson-editor.html?subject=${currentSubject}&section=${sectionId}&id=${lessonId}`;
-}
-
-// ===== INIT =====
-subjectSelect.addEventListener("change", async () => {
-  currentSubject = subjectSelect.value;
+  resetSectionForm();
   await loadSections();
-});
+}
 
-addSectionBtn.addEventListener("click", addSection);
+// Өшіру
+async function deleteSection(sectionId) {
+  const { error } = await sb
+    .from("sections")
+    .delete()
+    .eq("id", sectionId);
 
-window.saveSection = saveSection;
-window.deleteSection = deleteSection;
-window.addLesson = addLesson;
-window.saveLesson = saveLesson;
-window.deleteLesson = deleteLesson;
-window.openLesson = openLesson;
+  if (error) {
+    console.error("Бөлімді өшіру қатесі:", error);
+    alert("Бөлімді өшіру кезінде қате шықты");
+    return;
+  }
 
-loadSections();
+  if (editingSectionId === sectionId) {
+    resetSectionForm();
+  }
+
+  await loadSections();
+}
+
+// Форманы бастапқы күйге келтіру
+function resetSectionForm() {
+  editingSectionId = null;
+  input.value = "";
+  addBtn.textContent = "+ Бөлім қосу";
+}
+
+// Select өзгергенде
+if (subjectSelect) {
+  subjectSelect.addEventListener("change", () => {
+    const value = subjectSelect.value;
+
+    resetSectionForm();
+
+    if (!value) {
+      currentSubject = null;
+      updateSubjectUI();
+      window.history.replaceState({}, "", "sections.html");
+      return;
+    }
+
+    currentSubject = value;
+    updateSubjectUI();
+    window.history.replaceState({}, "", `sections.html?subject=${value}`);
+    loadSections();
+  });
+}
+
+// Қосу батырмасы
+if (addBtn) {
+  addBtn.addEventListener("click", addOrUpdateSection);
+}
+
+// Бастапқы жүктеу
+async function initPage() {
+  await loadSubjectsToSelect();
+  updateSubjectUI();
+
+  if (currentSubject) {
+    await loadSections();
+  }
+}
+
+initPage();

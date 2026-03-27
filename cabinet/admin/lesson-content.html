@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Сабақ контенті</title>
+  <link rel="stylesheet" href="admin.css" />
+  <link rel="stylesheet" href="lesson-content.css" />
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar" id="sidebar">
+      <h2 class="logo">Admin</h2>
+      <ul id="menu"></ul>
+    </aside>
+
+    <main class="main">
+      <div class="page-header">
+        <h1 id="lessonTitle">Сабақ</h1>
+        <p id="pageSubtitle">Сабақ контентін басқару</p>
+      </div>
+
+      <div class="info-grid">
+        <div class="info-box">
+          <label>Пән</label>
+          <div id="subjectBadge" class="info-badge">Жүктелуде...</div>
+        </div>
+
+        <div class="info-box">
+          <label>Бөлім</label>
+          <div id="sectionBadge" class="info-badge">Жүктелуде...</div>
+        </div>
+      </div>
+
+      <div class="form-box">
+        <label for="videoInput">Видео сілтемесі (YouTube)</label>
+        <input
+          id="videoInput"
+          type="text"
+          placeholder="https://www.youtube.com/watch?v=..."
+        />
+
+        <div class="video-preview">
+          <iframe
+            id="videoFrame"
+            width="100%"
+            height="320"
+            src=""
+            frameborder="0"
+            allowfullscreen
+          ></iframe>
+        </div>
+      </div>
+
+      <div class="form-box">
+        <label for="descriptionInput">Қысқаша сипаттама</label>
+        <textarea
+          id="descriptionInput"
+          rows="4"
+          placeholder="Сабақтың қысқаша сипаттамасы"
+        ></textarea>
+      </div>
+
+      <div class="form-box">
+        <label for="contentInput">Сабақ конспектісі</label>
+        <textarea
+          id="contentInput"
+          rows="14"
+          placeholder="Сабақтың толық мәтінін жазыңыз..."
+        ></textarea>
+      </div>
+
+      <div class="actions-row">
+        <button id="saveLessonBtn" type="button" class="btn-save">
+          💾 Сақтау
+        </button>
+
+        <a id="backToLessonsBtn" class="btn-back" href="#">
+          ← Сабақтар тізіміне қайту
+        </a>
+      </div>
+    </main>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js"></script>
+  <script src="admin-layout.js"></script>
+  <script src="lesson-content.js"></script>
+</body>
+</html>

@@ -1,4 +1,4 @@
-const supabaseClient = window.supabaseClient;
+
 
 let groupsData = [];
 let studentsData = [];

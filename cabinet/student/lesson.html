@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Сабақ</title>
+
+  <link rel="stylesheet" href="css/layout.css" />
+  <link rel="stylesheet" href="css/lesson.css" />
+</head>
+<body>
+
+<div class="container">
+  <aside class="sidebar" id="sidebar">
+    <h2 class="logo">MAGISTER</h2>
+
+    <ul class="menu">
+      <li><a href="index.html">🏠 Кабинет</a></li>
+      <li><a href="profile.html">👤 Профиль</a></li>
+      <li><a href="subjects.html" class="active">📚 Пәндер</a></li>
+      <li><a href="results.html">📊 Нәтижелер</a></li>
+    </ul>
+  </aside>
+
+  <main class="main">
+    <div class="header">
+      <div class="welcome-box">
+        <button class="menu-toggle" id="menu-toggle">☰</button>
+        <div>
+          <h1 id="lesson-title">Сабақ</h1>
+          <p id="lesson-description"></p>
+        </div>
+      </div>
+
+      <button class="logout" id="logout-btn">Шығу</button>
+    </div>
+
+    <div class="top-actions">
+      <a href="javascript:history.back()" class="back-btn">← Артқа</a>
+    </div>
+
+    <div class="lesson-content">
+
+      <!-- Видео -->
+      <div id="lesson-video" class="video-box"></div>
+
+      <!-- Контент -->
+      <div id="lesson-text" class="text-box"></div>
+
+      <!-- Тест -->
+      <div class="test-box">
+        <a id="test-btn" class="test-btn">Тест тапсыру</a>
+      </div>
+
+    </div>
+
+  </main>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/supabase-config.js"></script>
+<script src="js/layout.js"></script>
+<script src="js/lesson.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Нәтижелер</title>
+
+  <link rel="stylesheet" href="css/layout.css" />
+  <link rel="stylesheet" href="css/results.css" />
+</head>
+<body>
+
+<div class="container">
+  <aside class="sidebar" id="sidebar">
+    <h2 class="logo">MAGISTER</h2>
+
+    <ul class="menu">
+      <li><a href="index.html">🏠 Кабинет</a></li>
+      <li><a href="profile.html">👤 Профиль</a></li>
+      <li><a href="subjects.html">📚 Пәндер</a></li>
+      <li><a href="results.html" class="active">📊 Нәтижелер</a></li>
+    </ul>
+  </aside>
+
+  <main class="main">
+    <div class="header">
+      <div class="welcome-box">
+        <button class="menu-toggle" id="menu-toggle" type="button">☰</button>
+        <div>
+          <h1>Нәтижелер</h1>
+          <p id="results-message">Сіздің барлық тест нәтижелеріңіз</p>
+        </div>
+      </div>
+
+      <button class="logout" id="logout-btn" type="button">Шығу</button>
+    </div>
+
+    <div class="results-summary">
+      <div class="summary-card">
+        <h3>Пәндер саны</h3>
+        <p id="summary-subject-count">0</p>
+      </div>
+
+      <div class="summary-card">
+        <h3>Тапсырылған тесттер</h3>
+        <p id="summary-test-count">0</p>
+      </div>
+
+      <div class="summary-card">
+        <h3>Орташа нәтиже</h3>
+        <p id="summary-average">0%</p>
+      </div>
+
+      <div class="summary-card">
+        <h3>Соңғы нәтиже</h3>
+        <p id="summary-last-result">—</p>
+      </div>
+    </div>
+
+    <div id="subject-results-details" class="subject-results-details hidden"></div>
+
+    <div id="results-grid" class="results-grid">
+      <div class="results-empty">Жүктелуде...</div>
+    </div>
+  </main>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/supabase-config.js"></script>
+<script src="js/layout.js"></script>
+<script src="js/results.js"></script>
+
+</body>
+</html>

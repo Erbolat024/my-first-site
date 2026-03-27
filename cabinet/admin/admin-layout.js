@@ -1,7 +1,4 @@
-const supabaseUrl = "https://ewpouavcxepprlhppyal.supabase.co";
-const supabaseKey = "sb_publishable__L6lwv9FNWNDYeLMD1SK2g_PU6Gn-EW";
-
-window.supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
+const supabaseClient = window.supabaseClient;
 
 async function initAdmin() {
   const {
@@ -64,7 +61,9 @@ function renderMenu(role) {
 
       <li><a href="results.html">Нәтижелер</a></li>
       <li><a href="sections.html">Контент</a></li>
+      <li><a href="subjects.html">Пәндер</a></li>
       <li><a href="#" data-logout="true">Шығу</a></li>
+      
     `;
   } else if (role === "curator") {
     html = `
@@ -76,6 +75,7 @@ function renderMenu(role) {
     html = `
       <li><a href="dashboard.html">Dashboard</a></li>
       <li><a href="sections.html">Контент</a></li>
+      <li><a href="subjects.html">Пәндер</a></li>
       <li><a href="#" data-logout="true">Шығу</a></li>
     `;
   } else {

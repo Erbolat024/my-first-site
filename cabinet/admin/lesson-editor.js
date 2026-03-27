@@ -1,304 +1,377 @@
-const supabaseUrl = "https://ewpouavcxepprlhppyal.supabase.co";
-const supabaseKey = "sb_publishable__L6lwv9FNWNDYeLMD1SK2g_PU6Gn-EW";
-const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
+const sb = window.supabaseClient;
 
-const lessonMeta = document.getElementById("lessonMeta");
-const lessonTitleInput = document.getElementById("lessonTitle");
-const lessonDescriptionInput = document.getElementById("lessonDescription");
-const lessonVideoInput = document.getElementById("lessonVideo");
-const lessonContentInput = document.getElementById("lessonContent");
-const saveLessonBtn = document.getElementById("saveLessonBtn");
-const addQuestionBtn = document.getElementById("addQuestionBtn");
-const questionsContainer = document.getElementById("questionsContainer");
+const lessonsContainer = document.getElementById("lessonsContainer");
+const addLessonBtn = document.getElementById("addLessonBtn");
+const newLessonTitleInput = document.getElementById("newLessonTitle");
 
-const params = new URLSearchParams(window.location.search);
-const subject = params.get("subject");
-const sectionId = params.get("section");
-const lessonId = params.get("id");
+const subjectSelect = document.getElementById("subjectSelect");
+const sectionSelect = document.getElementById("sectionSelect");
 
-let currentLesson = null;
-let currentQuestions = [];
+const pageTitle = document.getElementById("page-title");
+const pageSubtitle = document.getElementById("page-subtitle");
+const currentSubjectBadge = document.getElementById("currentSubjectBadge");
+const currentSectionBadge = document.getElementById("currentSectionBadge");
 
-async function initEditor() {
-  if (!subject || !lessonId) {
-    lessonMeta.textContent = "Параметрлер қате берілген";
+let currentSubject = null;
+let currentSectionId = null;
+let currentSection = null;
+let editingLessonId = null;
+
+function getParams() {
+  const params = new URLSearchParams(window.location.search);
+  return {
+    subject: params.get("subject"),
+    section: params.get("section")
+  };
+}
+
+async function loadSubjectsToSelect() {
+  const { data, error } = await sb
+    .from("subjects")
+    .select("*")
+    .eq("is_active", true)
+    .order("name", { ascending: true });
+
+  if (error) {
+    console.error("Пәндерді жүктеу қатесі:", error);
     return;
   }
 
-  await loadLesson();
-  await loadQuestions();
+  subjectSelect.innerHTML = `<option value="">Пәнді таңдаңыз</option>`;
+
+  data.forEach((subject) => {
+    const option = document.createElement("option");
+    option.value = subject.slug;
+    option.textContent = subject.name;
+    subjectSelect.appendChild(option);
+  });
 }
 
-async function loadLesson() {
-  const { data, error } = await supabaseClient
-    .from("lessons")
+async function loadSectionsToSelect(subjectSlug) {
+  if (!subjectSlug) {
+    sectionSelect.innerHTML = `<option value="">Алдымен пәнді таңдаңыз</option>`;
+    return;
+  }
+
+  const { data, error } = await sb
+    .from("sections")
     .select("*")
-    .eq("id", lessonId)
+    .eq("subject", subjectSlug)
+    .order("created_at", { ascending: true });
+
+  if (error) {
+    console.error("Бөлімдерді жүктеу қатесі:", error);
+    return;
+  }
+
+  sectionSelect.innerHTML = `<option value="">Бөлімді таңдаңыз</option>`;
+
+  data.forEach((section) => {
+    const option = document.createElement("option");
+    option.value = section.id;
+    option.textContent = section.title;
+    sectionSelect.appendChild(option);
+  });
+}
+
+async function loadSectionById(sectionId) {
+  if (!sectionId) {
+    currentSection = null;
+    return;
+  }
+
+  const { data, error } = await sb
+    .from("sections")
+    .select("*")
+    .eq("id", sectionId)
     .single();
 
-  if (error) {
-    console.error(error);
-    lessonMeta.textContent = "Сабақ жүктелмеді";
+  if (error || !data) {
+    console.error("Бөлімді жүктеу қатесі:", error);
+    currentSection = null;
     return;
   }
 
-  currentLesson = data;
-
-  lessonMeta.textContent = `${subject} • Бөлім ${sectionId} • Сабақ ID ${lessonId}`;
-  lessonTitleInput.value = currentLesson.title || "";
-  lessonDescriptionInput.value = currentLesson.description || "";
-  lessonVideoInput.value = currentLesson.video || "";
-  lessonContentInput.value = currentLesson.content || "";
+  currentSection = data;
 }
 
-async function loadQuestions() {
-  const { data, error } = await supabaseClient
-    .from("tests")
-    .select("*")
-    .eq("lesson_id", lessonId)
-    .order("sort_order", { ascending: true });
-
-  if (error) {
-    console.error(error);
-    currentQuestions = [];
-    renderQuestions();
+function updateUI() {
+  if (!currentSubject && !currentSection) {
+    pageTitle.textContent = "Сабақтар";
+    pageSubtitle.textContent = "Пән мен бөлімді таңдап, сабақтарды басқарыңыз";
+    currentSubjectBadge.textContent = "Таңдалмаған";
+    currentSectionBadge.textContent = "Таңдалмаған";
+    lessonsContainer.innerHTML = `<p>Пән мен бөлімді таңдаңыз</p>`;
     return;
   }
 
-  currentQuestions = data || [];
-  renderQuestions();
+  if (currentSubject) {
+    currentSubjectBadge.textContent = currentSubject;
+  } else {
+    currentSubjectBadge.textContent = "Таңдалмаған";
+  }
+
+  if (currentSection) {
+    currentSectionBadge.textContent = currentSection.title;
+    pageTitle.textContent = `${currentSection.title} бөлімінің сабақтары`;
+    pageSubtitle.textContent = `Пән: ${currentSubject} | Бөлім: ${currentSection.title}`;
+  } else {
+    currentSectionBadge.textContent = "Таңдалмаған";
+    pageTitle.textContent = "Сабақтар";
+    pageSubtitle.textContent = "Пән мен бөлімді таңдап, сабақтарды басқарыңыз";
+    lessonsContainer.innerHTML = `<p>Пән мен бөлімді таңдаңыз</p>`;
+  }
 }
 
-function renderQuestions() {
-  questionsContainer.innerHTML = "";
-
-  if (!currentQuestions.length) {
-    questionsContainer.innerHTML = `
-      <div class="empty-state">
-        <p>Бұл сабаққа тест сұрақтары әлі қосылмаған.</p>
-      </div>
-    `;
+async function loadLessons() {
+  if (!currentSectionId) {
+    updateUI();
     return;
   }
 
-  currentQuestions.forEach((question, index) => {
-    const options = normalizeOptions(question.options);
-    const correct = question.correct || "A";
-
-    const card = document.createElement("div");
-    card.className = "question-card";
-
-    card.innerHTML = `
-      <div class="question-top">
-        <h3>Сұрақ ${index + 1}</h3>
-        <div class="question-actions">
-          <button class="btn secondary save-question-btn" data-id="${question.id}">Сақтау</button>
-          <button class="btn danger delete-question-btn" data-id="${question.id}">Өшіру</button>
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label>Сұрақ мәтіні</label>
-        <textarea class="question-text" data-id="${question.id}" rows="3">${escapeHtml(question.question || "")}</textarea>
-      </div>
-
-      <div class="options-wrap">
-        ${["A", "B", "C", "D"].map(letter => `
-          <div class="option-row">
-            <div class="option-badge">${letter}</div>
-            <input
-              type="text"
-              class="option-input"
-              data-id="${question.id}"
-              data-option="${letter}"
-              value="${escapeHtml(options[letter] || "")}"
-              placeholder="${letter} жауабы"
-            />
-          </div>
-        `).join("")}
-      </div>
-
-      <div class="correct-answer-box">
-        <label>Дұрыс жауап</label>
-        <div class="correct-answer-options">
-          ${["A", "B", "C", "D"].map(letter => `
-            <label>
-              <input
-                type="radio"
-                name="correct-${question.id}"
-                class="correct-answer-radio"
-                data-id="${question.id}"
-                value="${letter}"
-                ${correct === letter ? "checked" : ""}
-              />
-              ${letter}
-            </label>
-          `).join("")}
-        </div>
-      </div>
-    `;
-
-    questionsContainer.appendChild(card);
-  });
-
-  attachQuestionEvents();
-}
-
-function attachQuestionEvents() {
-  document.querySelectorAll(".save-question-btn").forEach(btn => {
-    btn.addEventListener("click", async (event) => {
-      const questionId = Number(event.target.dataset.id);
-      await saveQuestion(questionId);
-    });
-  });
-
-  document.querySelectorAll(".delete-question-btn").forEach(btn => {
-    btn.addEventListener("click", async (event) => {
-      const questionId = Number(event.target.dataset.id);
-      await deleteQuestion(questionId);
-    });
-  });
-}
-
-async function saveLesson() {
-  if (!currentLesson) return;
-
-  const payload = {
-    title: lessonTitleInput.value.trim(),
-    description: lessonDescriptionInput.value.trim(),
-    content: lessonContentInput.value.trim(),
-    video: lessonVideoInput.value.trim()
-  };
-
-  const { error } = await supabaseClient
+  const { data, error } = await sb
     .from("lessons")
-    .update(payload)
+    .select("*")
+    .eq("section_id", currentSectionId)
+    .order("created_at", { ascending: true });
+
+  if (error) {
+    console.error("Сабақтарды жүктеу қатесі:", error);
+    lessonsContainer.innerHTML = `<p>Сабақтарды жүктеу кезінде қате шықты</p>`;
+    return;
+  }
+
+  renderLessons(data);
+}
+
+function renderLessons(lessons) {
+  if (!lessons || lessons.length === 0) {
+    lessonsContainer.innerHTML = `<p>Бұл бөлімде әзірге сабақтар жоқ</p>`;
+    return;
+  }
+
+  lessonsContainer.innerHTML = lessons
+    .map((lesson) => {
+      return `
+        <div class="lesson-card">
+          <h3>${lesson.title || "Атаусыз сабақ"}</h3>
+          <p class="lesson-meta"><strong>ID:</strong> ${lesson.id}</p>
+          <p class="lesson-meta"><strong>Section ID:</strong> ${lesson.section_id}</p>
+
+          <div class="lesson-actions">
+            <button
+              class="btn-edit-lesson"
+              type="button"
+              data-edit-id="${lesson.id}"
+              data-edit-title="${lesson.title || ""}"
+            >
+              Өңдеу
+            </button>
+
+            <button
+              class="btn-delete-lesson"
+              type="button"
+              data-delete-id="${lesson.id}"
+            >
+              Өшіру
+            </button>
+
+            <a
+              class="btn-open-lesson"
+              href="lesson-content.html?subject=${currentSubject}&section=${currentSectionId}&lesson=${lesson.id}"
+            >
+              Сабақ ішіне өту
+            </a>
+
+            <a
+              class="btn-open-test"
+              href="test-editor.html?subject=${currentSubject}&section=${currentSectionId}&lesson=${lesson.id}"
+            >
+              Сабақ тестіне өту
+            </a>
+          </div>
+        </div>
+      `;
+    })
+    .join("");
+
+  bindLessonActions();
+}
+
+function bindLessonActions() {
+  document.querySelectorAll("[data-edit-id]").forEach((button) => {
+    button.addEventListener("click", () => {
+      editingLessonId = button.dataset.editId;
+      newLessonTitleInput.value = button.dataset.editTitle || "";
+      addLessonBtn.textContent = "Өзгерісті сақтау";
+
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+      });
+    });
+  });
+
+  document.querySelectorAll("[data-delete-id]").forEach((button) => {
+    button.addEventListener("click", async () => {
+      const lessonId = button.dataset.deleteId;
+      const confirmed = confirm("Бұл сабақты өшіргіңіз келе ме?");
+      if (!confirmed) return;
+
+      await deleteLesson(lessonId);
+    });
+  });
+}
+
+async function addOrUpdateLesson() {
+  const title = newLessonTitleInput.value.trim();
+
+  if (!currentSubject || !currentSectionId) {
+    alert("Алдымен пән мен бөлімді таңдаңыз");
+    return;
+  }
+
+  if (!title) {
+    alert("Сабақ атауын толтырыңыз");
+    return;
+  }
+
+  if (editingLessonId) {
+    const { error } = await sb
+      .from("lessons")
+      .update({ title })
+      .eq("id", editingLessonId);
+
+    if (error) {
+      console.error("Сабақты жаңарту қатесі:", error);
+      alert("Сабақты жаңарту кезінде қате шықты");
+      return;
+    }
+
+    resetLessonForm();
+    await loadLessons();
+    return;
+  }
+
+  const { error } = await sb
+    .from("lessons")
+    .insert([
+      {
+        title,
+        subject: currentSubject,
+        section_id: currentSectionId
+      }
+    ]);
+
+  if (error) {
+    console.error("Сабақ қосу қатесі:", error);
+    alert("Сабақ қосу кезінде қате шықты");
+    return;
+  }
+
+  resetLessonForm();
+  await loadLessons();
+}
+
+async function deleteLesson(lessonId) {
+  const { error } = await sb
+    .from("lessons")
+    .delete()
     .eq("id", lessonId);
 
   if (error) {
-    console.error(error);
-    alert("Сабақ сақталмады");
+    console.error("Сабақты өшіру қатесі:", error);
+    alert("Сабақты өшіру кезінде қате шықты");
     return;
   }
 
-  alert("Сабақ сақталды");
+  if (String(editingLessonId) === String(lessonId)) {
+    resetLessonForm();
+  }
+
+  await loadLessons();
 }
 
-async function addQuestion() {
-  const nextSort = currentQuestions.length
-    ? Math.max(...currentQuestions.map(q => q.sort_order || 0)) + 1
-    : 1;
+function resetLessonForm() {
+  editingLessonId = null;
+  newLessonTitleInput.value = "";
+  addLessonBtn.textContent = "+ Сабақ қосу";
+}
 
-  const { error } = await supabaseClient
-    .from("tests")
-    .insert([{
-      lesson_id: Number(lessonId),
-      question: "",
-      options: {
-        A: "",
-        B: "",
-        C: "",
-        D: ""
-      },
-      correct: "A",
-      sort_order: nextSort
-    }]);
+subjectSelect.addEventListener("change", async () => {
+  currentSubject = subjectSelect.value || null;
+  currentSectionId = null;
+  currentSection = null;
+  resetLessonForm();
 
-  if (error) {
-    console.error(error);
-    alert("Сұрақ қосылмады");
+  await loadSectionsToSelect(currentSubject);
+  updateUI();
+
+  if (!currentSubject) {
+    window.history.replaceState({}, "", "lesson-editor.html");
     return;
   }
 
-  await loadQuestions();
-}
+  window.history.replaceState({}, "", `lesson-editor.html?subject=${currentSubject}`);
+});
 
-async function saveQuestion(questionId) {
-  const questionTextEl = document.querySelector(`.question-text[data-id="${questionId}"]`);
-  const optionEls = document.querySelectorAll(`.option-input[data-id="${questionId}"]`);
-  const correctEl = document.querySelector(`.correct-answer-radio[data-id="${questionId}"]:checked`);
+sectionSelect.addEventListener("change", async () => {
+  const value = sectionSelect.value;
 
-  const options = { A: "", B: "", C: "", D: "" };
+  resetLessonForm();
 
-  optionEls.forEach(input => {
-    options[input.dataset.option] = input.value;
-  });
+  if (!value) {
+    currentSectionId = null;
+    currentSection = null;
+    updateUI();
 
-  const payload = {
-    question: questionTextEl ? questionTextEl.value.trim() : "",
-    options,
-    correct: correctEl ? correctEl.value : "A"
-  };
-
-  const { error } = await supabaseClient
-    .from("tests")
-    .update(payload)
-    .eq("id", questionId);
-
-  if (error) {
-    console.error(error);
-    alert("Сұрақ сақталмады");
+    if (currentSubject) {
+      window.history.replaceState({}, "", `lesson-editor.html?subject=${currentSubject}`);
+    } else {
+      window.history.replaceState({}, "", "lesson-editor.html");
+    }
     return;
   }
 
-  alert("Сұрақ сақталды");
-  await loadQuestions();
+  currentSectionId = Number(value);
+  await loadSectionById(currentSectionId);
+  updateUI();
+
+  window.history.replaceState(
+    {},
+    "",
+    `lesson-editor.html?subject=${currentSubject}&section=${currentSectionId}`
+  );
+
+  await loadLessons();
+});
+
+if (addLessonBtn) {
+  addLessonBtn.addEventListener("click", addOrUpdateLesson);
 }
 
-async function deleteQuestion(questionId) {
-  if (!confirm("Осы сұрақты өшіргің келе ме?")) return;
+async function initPage() {
+  const { subject, section } = getParams();
 
-  const { error } = await supabaseClient
-    .from("tests")
-    .delete()
-    .eq("id", questionId);
+  await loadSubjectsToSelect();
 
-  if (error) {
-    console.error(error);
-    alert("Сұрақ өшірілмеді");
-    return;
+  if (subject) {
+    currentSubject = subject;
+    subjectSelect.value = subject;
+    await loadSectionsToSelect(subject);
   }
 
-  await loadQuestions();
-}
-
-function normalizeOptions(options) {
-  if (Array.isArray(options)) {
-    return {
-      A: options[0] || "",
-      B: options[1] || "",
-      C: options[2] || "",
-      D: options[3] || ""
-    };
+  if (section) {
+    currentSectionId = Number(section);
+    sectionSelect.value = section;
+    await loadSectionById(currentSectionId);
   }
 
-  if (options && typeof options === "object") {
-    return {
-      A: options.A || "",
-      B: options.B || "",
-      C: options.C || "",
-      D: options.D || ""
-    };
+  updateUI();
+
+  if (currentSectionId) {
+    await loadLessons();
   }
-
-  return {
-    A: "",
-    B: "",
-    C: "",
-    D: ""
-  };
 }
 
-function escapeHtml(value) {
-  return String(value)
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#039;");
-}
-
-saveLessonBtn.addEventListener("click", saveLesson);
-addQuestionBtn.addEventListener("click", addQuestion);
-
-initEditor();
+initPage();

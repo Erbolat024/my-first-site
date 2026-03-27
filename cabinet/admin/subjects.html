@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Пәндер</title>
+
+  <link rel="stylesheet" href="admin.css" />
+  <link rel="stylesheet" href="subjects.css" />
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar" id="sidebar">
+      <h2 class="logo">Admin</h2>
+      <ul id="menu"></ul>
+    </aside>
+
+    <main class="main">
+      <div class="page-header">
+        <h1>Пәндер</h1>
+        <p>Жаңа пән қосу және пәндер тізімін басқару</p>
+      </div>
+
+      <section class="card form-card">
+        <h2>Пән қосу</h2>
+
+        <form id="subject-form" class="subject-form">
+          <div class="form-group">
+            <label for="name">Пән атауы</label>
+            <input
+              type="text"
+              id="name"
+              placeholder="Мысалы: География"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="slug">Slug</label>
+            <input
+              type="text"
+              id="slug"
+              placeholder="Мысалы: geography"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="description">Сипаттама</label>
+            <textarea
+              id="description"
+              rows="4"
+              placeholder="Қысқаша сипаттама"
+            ></textarea>
+          </div>
+
+          <div class="form-group checkbox-group">
+            <label>
+              <input type="checkbox" id="is_active" checked />
+              Белсенді пән
+            </label>
+          </div>
+
+          <button type="submit" class="btn-primary">Пәнді сақтау</button>
+        </form>
+
+        <p id="form-message" class="form-message"></p>
+      </section>
+       
+      <section class="card list-card">
+  <div class="list-header">
+    <h2>Пәндер тізімі</h2>
+
+    <div class="list-actions">
+      <input
+        type="text"
+        id="search-input"
+        placeholder="Пәнді іздеу..."
+        class="search-input"
+      />
+
+      <button id="reload-btn" class="btn-secondary" type="button">
+        Жаңарту
+      </button>
+    </div>
+  </div>
+
+  <div id="subjects-list" class="subjects-list">
+    <p class="empty-text">Пәндер жүктелуде...</p>
+  </div>
+</section>
+        
+      </section>
+    </main>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js"></script>
+  <script src="admin-layout.js"></script>
+  <script src="subjects.js"></script>
+</body>
+</html>

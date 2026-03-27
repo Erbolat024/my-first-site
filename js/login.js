@@ -36,7 +36,7 @@ if (loginForm) {
       if (profileError) throw profileError;
 
       if (profile.role === "student") {
-        window.location.href = "../cabinet/index.html";
+        window.location.href = "../cabinet/student/index.html";
         return;
       }
 
