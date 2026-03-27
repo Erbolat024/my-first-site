@@ -26,13 +26,18 @@ async function initLayout() {
   await loadDashboardStats(user.id);
 
   // LOGOUT
-  const logoutBtn = document.getElementById("logout-btn");
-  if (logoutBtn) {
-    logoutBtn.addEventListener("click", async () => {
-      await supabaseClient.auth.signOut();
-      window.location.href = "../../../pages/login.html";
-    });
-  }
+ const BASE_URL = window.location.hostname.includes("github.io")
+  ? "/my-first-site"
+  : "";
+
+const logoutBtn = document.getElementById("logout-btn");
+
+if (logoutBtn) {
+  logoutBtn.addEventListener("click", async () => {
+    await supabaseClient.auth.signOut();
+    window.location.href = `${BASE_URL}/pages/login.html`;
+  });
+}
 
   // SIDEBAR TOGGLE
   const sidebar = document.getElementById("sidebar");
