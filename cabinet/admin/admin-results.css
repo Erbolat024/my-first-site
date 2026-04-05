@@ -9,23 +9,7 @@ body {
   color: #1f2937;
 }
 
-.layout {
-  display: flex;
-  min-height: 100vh;
-}
 
-.sidebar {
-  width: 260px;
-  background: #1e2d4a;
-  color: #fff;
-  padding: 28px 20px;
-  flex-shrink: 0;
-  transition: 0.3s ease;
-}
-
-.sidebar.hidden {
-  margin-left: -260px;
-}
 
 .logo {
   margin: 0 0 28px;

@@ -33,22 +33,40 @@
       </div>
 
       <div class="form-box">
-        <label for="videoInput">Видео сілтемесі (YouTube)</label>
+        <label for="videoFile">Видео файл жүктеу</label>
         <input
-          id="videoInput"
-          type="text"
-          placeholder="https://www.youtube.com/watch?v=..."
+          id="videoFile"
+          type="file"
+          accept="video/mp4,video/webm,video/ogg"
         />
 
-        <div class="video-preview">
-          <iframe
-            id="videoFrame"
+        <div style="margin-top: 12px;">
+          <button id="uploadVideoBtn" type="button" class="btn-save">
+            ⬆ Видеоны жүктеу
+          </button>
+        </div>
+
+        <div style="margin-top: 14px;">
+          <label for="videoInput">Видео ссылкасы</label>
+          <input
+            id="videoInput"
+            type="text"
+            placeholder="Жүктелген видео ссылкасы осы жерге түседі"
+          />
+        </div>
+
+        <div class="video-preview" style="margin-top: 16px;">
+          <video
+            id="videoPreview"
             width="100%"
             height="320"
-            src=""
-            frameborder="0"
-            allowfullscreen
-          ></iframe>
+            controls
+            playsinline
+            style="display: none; border-radius: 14px; background: #000;"
+          >
+            <source id="videoSource" src="" type="video/mp4" />
+            Сіздің браузер видео ойнатуды қолдамайды.
+          </video>
         </div>
       </div>
 
